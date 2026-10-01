@@ -25,7 +25,7 @@ from matplotlib import font_manager
 from matplotlib.ticker import FuncFormatter, MaxNLocator
 from scipy import stats
 
-from . import analisis, fisica, sesion
+from . import analisis, fisica
 
 # --- Identidad visual -------------------------------------------------------
 
@@ -235,11 +235,23 @@ def fig_e2(res):
     barras = ax.barh(nombres, t["atenuacion_db"], color=AMBAR, height=0.6)
     ax.bar_label(barras, labels=[f"{v:.0f} dB" for v in t["atenuacion_db"]],
                  padding=6, color=TINTA)
+    # Predicción teórica para "persona en medio": la onda rodea el cuerpo.
+    if "persona_en_medio" in t.index:
+        y = list(t.index).index("persona_en_medio")
+        pred = res["prediccion_difraccion_db"]
+        ax.plot([pred, pred], [y - 0.38, y + 0.38], color=TINTA,
+                lw=plt.rcParams["lines.linewidth"], zorder=3)
+        ax.annotate(f"teoría de difracción: {pred:.0f} dB", (pred, y - 0.38),
+                    xytext=(0, -4), textcoords="offset points", ha="center", va="top",
+                    fontsize=plt.rcParams["font.size"] * 0.85)
+    _nota(ax, f"Si la onda ATRAVESARA 25 cm de músculo:\n≈ {res['prediccion_atravesar_db']:.0f} dB "
+              "(no llegaría nada).\nLa onda rodea el cuerpo.", y=0.62)
+    ax.yaxis.get_label().set_visible(False)
     ax.grid(axis="y", visible=False)
     ax.set_xlim(0, t["atenuacion_db"].max() * 1.18)
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     ax.set_xlabel("Atenuación respecto a la línea de vista (dB)")
-    _titulo(ax, "El cuerpo absorbe la señal de 2.4 GHz")
+    _titulo(ax, "El cuerpo bloquea los 2.4 GHz: la onda lo rodea")
     return fig
 
 
@@ -302,7 +314,14 @@ def fig_e5(res):
     ax1.set_ylim(0, 115)
 
     con = t.dropna(subset=["mediana_dbm"])
-    ax2.plot(con["distancia_m"], con["mediana_dbm"], "o-", color=AMBAR_OSCURO, mec=CREMA)
+    ax2.plot(con["distancia_m"], con["mediana_dbm"], "o-", color=AMBAR_OSCURO, mec=CREMA,
+             label="Medido en E5 (mediana)")
+    if "modelo_e1" in res:
+        m = res["modelo_e1"]
+        dd = np.linspace(t["distancia_m"].min(), t["distancia_m"].max(), 200)
+        ax2.plot(dd, fisica.rssi_log_distancia(dd, m["rssi_d0"], m["n"]), ls="--", color=TINTA,
+                 lw=plt.rcParams["lines.linewidth"] * 0.6, label=f"Modelo de E1 (n = {m['n']:.2f})")
+        ax2.legend(loc="upper right")
     ax2.axhline(SENSIBILIDAD_DBM, ls="--", color=TINTA, lw=plt.rcParams["lines.linewidth"] * 0.5)
     ax2.text(t["distancia_m"].min(), SENSIBILIDAD_DBM + 1.5,
              f"sensibilidad típica ≈ {SENSIBILIDAD_DBM:.0f} dBm", va="bottom")
@@ -313,17 +332,127 @@ def fig_e5(res):
         ax.axvline(alcance, color=AMBAR_OSCURO, lw=plt.rcParams["lines.linewidth"] * 0.6)
     ax1.text(alcance, 108, f" alcance máximo: {alcance:.0f} m ", ha="right", va="center",
              bbox={"boxstyle": "round,pad=0.3", "facecolor": MANTEQUILLA, "edgecolor": "none"})
+    if res.get("alcance_predicho_e1_m"):
+        pred = res["alcance_predicho_e1_m"]
+        for ax in (ax1, ax2):
+            ax.axvline(pred, ls=":", color=TINTA, lw=plt.rcParams["lines.linewidth"] * 0.6)
+        ax1.text(pred, 8, f" predicho por E1: {pred:.0f} m ", ha="right", va="bottom",
+                 bbox={"boxstyle": "round,pad=0.3", "facecolor": CREMA, "edgecolor": "none"})
     _titulo(ax1, "Hasta dónde llega la alerta")
+    return fig
+
+
+def fig_e1_regla(res):
+    """¿Sirve el RSSI como regla? Distancia estimada vs. distancia real."""
+    a = res["ajuste"]
+    p = res["puntos"]
+    factor = res["factor_incertidumbre_distancia"]
+    fig, ax = plt.subplots()
+    dd = np.geomspace(p["valor_condicion"].min() * 0.8, p["valor_condicion"].max() * 1.25, 50)
+    ax.fill_between(dd, dd / factor, dd * factor, color=MIEL, lw=0,
+                    label=f"Incertidumbre ±1σ (×/÷ {factor:.2f})")
+    ax.plot(dd, dd, color=TINTA, lw=plt.rcParams["lines.linewidth"] * 0.6, ls="--",
+            label="Estimación perfecta")
+    ax.plot(p["valor_condicion"], p["distancia_estimada_m"], "o", color=AMBAR, mec=CREMA,
+            label="Estimada con el RSSI de cada punto")
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    for eje in (ax.xaxis, ax.yaxis):
+        eje.set_major_formatter(FuncFormatter(_formato_metros))
+    ax.set_xticks([0.25, 0.5, 1, 2, 5, 10])
+    ax.set_yticks([0.25, 0.5, 1, 2, 5, 10])
+    ax.minorticks_off()
+    ax.set_xlabel("Distancia real (m)")
+    ax.set_ylabel("Distancia estimada con el RSSI (m)")
+    _titulo(ax, "El RSSI dice «frío o caliente», no los centímetros")
+    _nota(ax, f"Error típico: {100 * res['error_distancia_mediano']:.0f} %", x=0.97, y=0.08)
+    ax.legend(loc="upper left")
+    return fig
+
+
+def fig_e2_desvanecimiento(res):
+    """Distribución acumulada de la potencia: Rice con y sin camino directo."""
+    m = res["muestras"]
+    fig, ax = plt.subplots()
+    x = np.linspace(-25, 8, 300)
+    estilos = [("linea_de_vista", AMBAR), ("persona_en_medio", AMBAR_OSCURO)]
+    for cond, color in estilos:
+        rssi = m.loc[m["condicion"] == cond, "rssi_dbm"].to_numpy(dtype=float)
+        if len(rssi) < 10:
+            continue
+        # Potencia relativa a su media (en mW), en dB.
+        rel = rssi - fisica.promedio_potencia_dbm(rssi)
+        orden = np.sort(rel)
+        ax.step(orden, np.arange(1, len(orden) + 1) / len(orden), where="post", color=color,
+                label=f"{ETIQUETAS[cond]} (medido)")
+        # Teoría: amplitud de Rice con potencia media 1.
+        k = res["tabla"].loc[cond, "k_rice"]
+        sigma = np.sqrt(1 / (2 * (k + 1)))
+        cdf = stats.rice.cdf(10 ** (x / 20), np.sqrt(2 * k), scale=sigma)
+        ax.plot(x, cdf, ls="--", color=color, lw=plt.rcParams["lines.linewidth"] * 0.6,
+                label=f"Rice, K = {k:.1f}")
+    ax.set_xlim(-25, 8)
+    ax.set_ylim(0, 1.02)
+    ax.set_xlabel("Potencia de cada paquete respecto a su media (dB)")
+    ax.set_ylabel("Fracción de paquetes (acumulada)")
+    _titulo(ax, "Sin camino directo, la señal tiembla más")
+    ax.legend(loc="upper left")
+    return fig
+
+
+def fig_teoria_debye():
+    """Permitividad del agua (Debye): el horno NO usa la resonancia del agua."""
+    f = np.geomspace(0.1e9, 300e9, 400)
+    e1, e2 = fisica.permitividad_debye(f)
+    pico = fisica.frecuencia_pico_perdidas()
+    fig, ax = plt.subplots()
+    ax.plot(f / 1e9, e1, color=AMBAR, label="ε′: cuánto se polariza (almacena)")
+    ax.plot(f / 1e9, e2, color=AMBAR_OSCURO, label="ε″: cuánto absorbe (calienta)")
+    for fx, texto in [(2.45, "BLE y horno\n2.45 GHz"), (pico / 1e9, f"máximo de\nabsorción\n{pico / 1e9:.0f} GHz")]:
+        ax.axvline(fx, color=TINTA, ls=":", lw=plt.rcParams["lines.linewidth"] * 0.6)
+        ax.text(fx * 1.08, 60, texto, va="top")
+    ax.set_xscale("log")
+    ax.xaxis.set_major_formatter(FuncFormatter(_formato_metros))
+    ax.set_xlabel("Frecuencia (GHz, escala logarítmica)")
+    ax.set_ylabel("Permitividad relativa del agua a 25 °C")
+    _titulo(ax, "El horno no usa la «resonancia» del agua")
+    ax.legend(loc="center left")
+    return fig
+
+
+def fig_teoria_dos_rayos():
+    """Espacio libre vs. dos rayos (reflexión en el piso), antenas a 1 m."""
+    d = np.geomspace(1, 300, 2000)
+    dc = fisica.distancia_quiebre(1.0, 1.0)
+    fig, ax = plt.subplots()
+    ax.plot(d, -fisica.perdida_dos_rayos_db(d), color=AMBAR,
+            label="Dos rayos: directo + reflejado en el piso")
+    ax.plot(d, -fisica.fspl_db(d), color=TINTA, ls="--", lw=plt.rcParams["lines.linewidth"] * 0.6,
+            label="Espacio libre (n = 2)")
+    ax.axvline(dc, color=AMBAR_OSCURO, ls=":", lw=plt.rcParams["lines.linewidth"] * 0.6)
+    ax.text(dc * 1.08, -45, f"quiebre\n4·h·h/λ = {dc:.0f} m\n(de n = 2 a n = 4)", va="top")
+    ax.set_xscale("log")
+    ax.xaxis.set_major_formatter(FuncFormatter(_formato_metros))
+    ax.set_ylim(-120, -35)
+    ax.set_xlabel("Distancia (m, escala logarítmica), llavero y portátil a 1 m del piso")
+    ax.set_ylabel("Ganancia del canal (dB)")
+    _titulo(ax, "El piso también refleja: lejos, la señal cae el doble de rápido")
+    ax.legend(loc="lower left")
     return fig
 
 
 SENSIBILIDAD_DBM = -95.0
 
+# Figuras que solo dependen de la teoría (no de mediciones).
+FIGURAS_TEORIA = [("T1_agua_debye", fig_teoria_debye), ("T2_dos_rayos", fig_teoria_dos_rayos)]
+
 FIGURAS = {
     "E1": [("E1_rssi_vs_distancia_log", fig_e1_log),
            ("E1_rssi_vs_distancia_lineal", fig_e1_lineal),
-           ("E1_residuos", fig_e1_residuos)],
-    "E2": [("E2_cuerpo_obstaculo", fig_e2)],
+           ("E1_residuos", fig_e1_residuos),
+           ("E1_rssi_como_regla", fig_e1_regla)],
+    "E2": [("E2_cuerpo_obstaculo", fig_e2),
+           ("E2_desvanecimiento", fig_e2_desvanecimiento)],
     "E3": [("E3_patron_radiacion", fig_e3)],
     "E4": [("E4_antena_vs_bateria", fig_e4)],
     "E5": [("E5_alcance", fig_e5)],
@@ -341,7 +470,7 @@ def exportar(funcion, res, nombre, carpeta):
         with plt.rc_context({**estilo(f["escala"]), "figure.figsize": f["figsize"]}):
             # constrained_layout acomoda los márgenes sin cambiar el tamaño
             # (bbox="tight" lo cambiaría y el video no saldría de 1920×1080).
-            fig = funcion(res)
+            fig = funcion(res) if res is not None else funcion()
             ruta = carpeta / f"{nombre}_{formato}.png"
             fig.savefig(ruta, dpi=f["dpi"])
             plt.close(fig)
@@ -353,15 +482,20 @@ def graficar_archivos(rutas_csv, carpeta_salida):
     """Analiza los CSV (combinando repeticiones) y exporta sus figuras."""
     registrar_fuentes()
     creadas = []
-    for exp, grupo in analisis.agrupar_sesiones(rutas_csv).items():
-        df, metas = sesion.cargar(grupo)
-        try:
-            res = analisis.analizar(df, metas)
-        except ValueError as e:
-            print(f"{exp}: sin figuras ({e})")
-            continue
+    # analizar_archivos cruza E1 con E5 (alcance predicho vs. medido).
+    resultados = analisis.analizar_archivos(rutas_csv, guardar=False, mostrar=False)
+    for exp, res in resultados.items():
         for nombre, funcion in FIGURAS[exp]:
             creadas += exportar(funcion, res, nombre, carpeta_salida)
+    return creadas
+
+
+def graficar_teoria(carpeta_salida):
+    """Figuras de teoría pura (no necesitan datos)."""
+    registrar_fuentes()
+    creadas = []
+    for nombre, funcion in FIGURAS_TEORIA:
+        creadas += exportar(funcion, None, nombre, carpeta_salida)
     return creadas
 
 
@@ -380,12 +514,12 @@ def main(argv=None):
         with tempfile.TemporaryDirectory() as tmp:
             rutas = generar_ejemplo(tmp)
             salida = Path(args.salida) / "ejemplo" if args.salida == "figuras" else args.salida
-            creadas = graficar_archivos(rutas, salida)
+            creadas = graficar_archivos(rutas, salida) + graficar_teoria(salida)
     else:
         rutas = analisis.sesiones_en(args.carpeta) if args.todo else args.csv
         if not rutas:
             p.error("Indica uno o más CSV, o usa --todo / --ejemplo")
-        creadas = graficar_archivos(rutas, args.salida)
+        creadas = graficar_archivos(rutas, args.salida) + graficar_teoria(args.salida)
     for r in creadas:
         print(r)
 

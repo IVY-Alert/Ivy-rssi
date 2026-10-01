@@ -4,7 +4,7 @@ El RSSI de cada muestra se arma con tres capas, de la más lenta a la más rápi
 
     RSSI = modelo determinista (distancia, obstáculo, ángulo)
          + sombreado X_σ (fijo en cada punto; σ = 3 dB)
-         + desvanecimiento rápido (cambia en cada paquete; ~2 dB)
+         + desvanecimiento rápido de Rice (cambia en cada paquete)
 
 y luego se redondea a entero, porque el radio del portátil reporta dBm enteros.
 Un paquete solo "llega" si su RSSI supera la sensibilidad del receptor:
@@ -28,7 +28,12 @@ SIGMA_SOMBRA = 3.0       # dB, sombreado log-normal (por punto) en E1 y E5
 # es casi el mismo en todas las condiciones y se cancela al comparar. Solo
 # queda una variación pequeña (mover la mano, girar el llavero unos cm).
 SIGMA_SOMBRA_FIJO = 1.0
-SIGMA_RAPIDO = 2.0       # dB, desvanecimiento rápido (por muestra)
+# Desvanecimiento rápido: factor K de Rice (potencia directa / dispersa).
+# K = 10 da una dispersión de ~2 dB (línea de vista). Al tapar el camino
+# directo, K baja y la señal "tiembla" más (K → 0 es Rayleigh).
+K_LINEA_DE_VISTA = 10.0
+K_E2 = {"linea_de_vista": 10.0, "en_la_mano": 6.0, "bolsillo": 2.0,
+        "persona_en_medio": 0.5, "morral": 4.0}
 TASA_ANUNCIOS = 8.0      # anuncios recibidos por segundo cuando la señal es buena
 SENSIBILIDAD = -95.0     # dBm; por debajo de esto el paquete se pierde
 
@@ -74,6 +79,17 @@ def rssi_esperado(experimento, etiqueta, valor):
     raise ValueError(f"Experimento desconocido: {experimento}")
 
 
+def desvanecimiento_rice_db(k, n, rng):
+    """n valores (dB) de desvanecimiento de Rice con potencia media 1 (0 dB).
+
+    Amplitud = |componente directa + suma de muchas ondas dispersas|. Las
+    dispersas, por el teorema del límite central, son una gaussiana compleja.
+    """
+    directa = np.sqrt(k / (k + 1))
+    dispersa = np.sqrt(1 / (2 * (k + 1))) * (rng.normal(size=n) + 1j * rng.normal(size=n))
+    return 20 * np.log10(np.abs(directa + dispersa))
+
+
 def simular_punto(experimento, etiqueta, valor, segundos, rng, t_inicio=None):
     """Muestras de UN punto: lista de (timestamp, rssi_dbm).
 
@@ -89,7 +105,8 @@ def simular_punto(experimento, etiqueta, valor, segundos, rng, t_inicio=None):
 
     n_intentos = rng.poisson(TASA_ANUNCIOS * segundos)
     tiempos = np.sort(rng.uniform(0, segundos, n_intentos)) + t_inicio
-    rssi = media + sombra + rng.normal(0, SIGMA_RAPIDO, n_intentos)
+    k = K_E2[etiqueta] if experimento == "E2" else K_LINEA_DE_VISTA
+    rssi = media + sombra + desvanecimiento_rice_db(k, n_intentos, rng)
 
     # Recepción: cerca de la sensibilidad el paquete se pierde con más
     # probabilidad (curva suave de ~2 dB de ancho, no un corte brusco).

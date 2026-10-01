@@ -1,60 +1,116 @@
-"""Todo de una sola pasada: medir → analizar → graficar.
+"""Programa principal de Ivy RSSI: entras, eliges una prueba y la ejecutas.
 
 Uso:
-    python -m ivy_rssi                      # los 5 experimentos, uno tras otro
-    python -m ivy_rssi E1 E2                # solo esos
-    python -m ivy_rssi --simular --auto     # demo sin Bluetooth ni preguntas
+    python -m ivy_rssi            # con el llavero
+    python -m ivy_rssi --simular  # sin Bluetooth, con datos simulados
 
-Los datos quedan en datos/ y las figuras en figuras/<fecha-hora>/.
+Después de cada prueba muestra los resultados y genera las figuras. Si una
+prueba ya tiene repeticiones anteriores en datos/, las combina. También trae
+el modo buscador, la calculadora física y el informe tipo trabajo de grado.
 """
 
 import argparse
-import time
 from pathlib import Path
 
 import numpy as np
 
-from . import analisis, graficas
+from . import analisis, buscador, calculadora, graficas, informe
 from .experimentos import EXPERIMENTOS
 from .registrador import pedir_metadatos, preparar_consola, registrar
 
 
+def _menu(simular, segundos):
+    print("\n" + "=" * 52)
+    print("  IVY RSSI — pruebas de señal" + ("   [SIMULADO]" if simular else ""))
+    print("=" * 52)
+    for i, (clave, exp) in enumerate(sorted(EXPERIMENTOS.items()), start=1):
+        print(f"  {i}) {clave}  {exp['nombre']}")
+    print("  ─────")
+    print("  6) Resultados, figuras e INFORME de todo lo medido")
+    print("  7) Buscador: ¿dónde está el llavero? (RSSI en vivo)")
+    print("  8) Calculadora física para una distancia")
+    print(f"  9) Cambiar segundos por punto (ahora {segundos:g} s)")
+    print("  0) Salir")
+    return input("\nElige una opción: ").strip()
+
+
+def _resultados(rutas, carpeta_figuras):
+    """Analiza las sesiones dadas, imprime los resultados y genera las figuras."""
+    if not rutas:
+        print("Todavía no hay mediciones.")
+        return
+    analisis.analizar_archivos(rutas)
+    creadas = graficas.graficar_archivos(rutas, carpeta_figuras)
+    if creadas:
+        print(f"\nFiguras en {carpeta_figuras}/ (las *_video.png son para el video)")
+
+
 def main(argv=None):
     preparar_consola()
-    p = argparse.ArgumentParser(description="Mide, analiza y grafica de una sola pasada.")
-    p.add_argument("experimentos", nargs="*", help="E1 ... E5 (por defecto, todos)")
+    p = argparse.ArgumentParser(description="Menú de pruebas de señal del llavero Ivy.")
     p.add_argument("--simular", action="store_true", help="datos sintéticos, sin Bluetooth")
-    p.add_argument("--auto", action="store_true", help="no preguntar nada")
     p.add_argument("--segundos", type=float, default=30, help="duración de cada punto")
     p.add_argument("--direccion", help="filtrar por dirección MAC en vez de por nombre")
     p.add_argument("--carpeta", default="datos")
     args = p.parse_args(argv)
-    experimentos = [e.upper() for e in args.experimentos] or sorted(EXPERIMENTOS)
-    for e in experimentos:
-        if e not in EXPERIMENTOS:
-            p.error(f"experimento desconocido: {e} (usa E1 ... E5)")
 
-    # Los datos de la sesión (portátil, alturas...) se piden UNA vez para todo.
-    meta = pedir_metadatos(args.auto)
+    claves = sorted(EXPERIMENTOS)
+    segundos = args.segundos
     rng = np.random.default_rng() if args.simular else None
+    carpeta = Path(args.carpeta)
 
-    rutas = []
-    try:
-        for exp in experimentos:
-            rutas.append(registrar(exp, args.carpeta, args.segundos, args.simular,
-                                   args.direccion, args.auto, meta, rng, pedir_datos=False))
-    except KeyboardInterrupt:
-        print("\nMedición interrumpida: se analiza lo que alcanzó a guardarse.")
+    # Los datos de la sesión (portátil, alturas...) se piden UNA vez al entrar.
+    meta = pedir_metadatos(auto=False)
 
-    if not rutas:
-        print("No se midió nada.")
-        return
-    print("\n" + "=" * 60 + "\nRESULTADOS")
-    analisis.analizar_archivos(rutas)
-    salida = Path("figuras") / time.strftime("%Y%m%d-%H%M%S")
-    creadas = graficas.graficar_archivos(rutas, salida)
-    print(f"\n{len(creadas)} figuras en {salida}/  (miren las *_video.png)")
+    while True:
+        opcion = _menu(args.simular, segundos)
+        if opcion == "0":
+            print("Hasta luego.")
+            break
+
+        if opcion in {"1", "2", "3", "4", "5"}:
+            exp = claves[int(opcion) - 1]
+            try:
+                registrar(exp, carpeta, segundos, args.simular, args.direccion,
+                          metadatos=meta, rng=rng, pedir_datos=False)
+            except KeyboardInterrupt:
+                print("\nPrueba interrumpida; los puntos terminados quedaron guardados.")
+            # Resultados de esta prueba, junto con sus repeticiones anteriores.
+            rutas = [r for r in analisis.sesiones_en(carpeta) if r.stem.startswith(exp + "_")]
+            _resultados(rutas, Path("figuras"))
+
+        elif opcion == "6":
+            rutas = analisis.sesiones_en(carpeta)
+            if not rutas:
+                print("Todavía no hay mediciones.")
+                continue
+            analisis.analizar_archivos(rutas)
+            ruta, figuras = informe.generar_todo(rutas, Path("figuras"))
+            print(f"\n{len(figuras)} figuras e informe en {ruta}")
+
+        elif opcion == "7":
+            buscador.buscar(args.direccion, args.simular, carpeta=carpeta)
+
+        elif opcion == "8":
+            r = input("Distancia en metros: ").strip().replace(",", ".")
+            try:
+                print("\n" + calculadora.ficha(float(r), carpeta))
+            except ValueError:
+                print("No es un número.")
+
+        elif opcion == "9":
+            r = input("Segundos por punto: ").strip().replace(",", ".")
+            try:
+                segundos = float(r)
+            except ValueError:
+                print("No es un número; sigue igual.")
+
+        else:
+            print("Opción no válida.")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nHasta luego.")

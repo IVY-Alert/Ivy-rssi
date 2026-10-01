@@ -113,11 +113,21 @@ punto del pasillo: las diferencias esperadas (6–10 dB) son comparables al mult
 - **E5:** toma larga alejándose; el momento en que el contador deja de subir.
 - Foto del ESP32 con la antena de PCB visible y de la batería LiPo (la bolsa de aluminio).
 
+## Para el video: el buscador
+
+Esconde el llavero en el salón y búscalo con la opción **7** del programa: la barra de
+frío/caliente y la distancia estimada en pantalla dan una toma muy visual, y explican en vivo
+la sección 9 de FISICA.md (el RSSI como regla). Hazlo después de E1, para que el buscador use
+tu calibración.
+
 ## Después
+
+En el programa, opción **6**: analiza todo, genera las figuras y escribe `figuras/INFORME.md`.
+Por partes:
 
 ```bash
 python -m ivy_rssi.analisis --todo
-python -m ivy_rssi.graficas --todo
+python -m ivy_rssi.informe --todo
 ```
 
 Copia la carpeta `datos/` a un lugar seguro (o haz commit) el mismo día.

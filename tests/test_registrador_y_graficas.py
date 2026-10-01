@@ -47,8 +47,8 @@ def test_punto_descartado_se_ignora(tmp_path):
 def test_graficas_se_generan(tmp_path):
     rutas = generar_ejemplo(tmp_path / "datos", segundos=5)
     creadas = graficas.graficar_archivos(rutas, tmp_path / "figuras")
-    # 7 figuras × 2 formatos
-    assert len(creadas) == 14
+    # 9 figuras de datos × 2 formatos
+    assert len(creadas) == 18
     from PIL import Image
     video = [r for r in creadas if r.name.endswith("_video.png")]
     assert all(Image.open(r).size == (1920, 1080) for r in video)

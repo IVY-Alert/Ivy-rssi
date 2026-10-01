@@ -89,9 +89,40 @@ def test_escaner_real_se_construye():
     registrador._crear_escaner(lambda d, a: None)
 
 
-def test_pasada_unica_simulada(tmp_path, monkeypatch):
+def test_menu_simulado(tmp_path, monkeypatch, capsys):
+    """Entra al programa, corre E4 y E2, pide resultados y sale."""
     from ivy_rssi.__main__ import main
     monkeypatch.chdir(tmp_path)
-    main(["E1", "e4", "--simular", "--auto", "--segundos", "3"])
-    figuras = list((tmp_path / "figuras").rglob("*.png"))
-    assert len(figuras) == 8          # (3 de E1 + 1 de E4) × 2 formatos
+    datos = [""] * 8
+    e4 = ["4"] + ["", ""] * 3          # elegir E4, medir y seguir en sus 3 puntos
+    e2 = ["2"] + ["", ""] * 5
+    respuestas = iter(datos + ["x", "9", "2,5"] + e4 + e2 + ["8", "5", "6", "0"])
+    monkeypatch.setattr("builtins.input", lambda *_: next(respuestas))
+    main(["--simular"])
+    salida = capsys.readouterr().out
+    assert "Opción no válida" in salida
+    assert "diseño final" in salida and "Línea de vista" in salida
+    assert "FICHA FÍSICA A 5 m" in salida
+    # E2 (2 figuras) + E4 (1) + teoría (2), en 2 formatos; y el informe.
+    assert len(list((tmp_path / "figuras").glob("*.png"))) == 10
+    assert (tmp_path / "figuras" / "INFORME.md").exists()
+
+
+def test_buscador_simulado():
+    from ivy_rssi import buscador
+    muestras = buscador.buscar(simular=True, duracion=2)
+    assert len(muestras) > 10
+
+
+def test_buscador_linea_estado():
+    from ivy_rssi import buscador
+    cal = {"rssi_d0": -55.0, "n": 2.0, "sigma_db": 3.0}
+    texto, rssi = buscador.linea_estado([(9.5, -75), (9.8, -75)], 10.0, cal, rssi_antes=-85)
+    assert rssi == -75 and "10.0 m" in texto and "más caliente" in texto
+    assert buscador.linea_estado([(1.0, -75)], 10.0, cal) == (None, None)   # muestras viejas
+
+
+def test_calculadora():
+    from ivy_rssi import calculadora
+    texto = calculadora.ficha(5)
+    assert "12.3 cm" in texto and "Fresnel" in texto

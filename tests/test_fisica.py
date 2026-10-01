@@ -78,3 +78,53 @@ def test_ajuste_sin_sesgo_en_muchas_semillas(tmp_path):
         aciertos += abs(a["n"] - N_SIM) <= a["n_ic95"]
     assert np.mean(ns) == pytest.approx(N_SIM, abs=0.06)
     assert aciertos >= 16   # ~95 % de 20
+
+
+# --- Física ampliada ---------------------------------------------------------
+
+def test_fresnel_y_filo_de_cuchillo():
+    # r1 en la mitad de 2 m: √(λ·1·1/2) ≈ 0.248 m
+    assert fisica.radio_fresnel(1, 1) == pytest.approx(0.248, abs=0.002)
+    # UIT-R P.526: J(0) ≈ 6 dB (medio frente de onda tapado)
+    assert fisica.perdida_filo_cuchillo_db(0) == pytest.approx(6.0, abs=0.1)
+    assert fisica.perdida_filo_cuchillo_db(-1) == 0
+    # La difracción predice MUCHO menos que atravesar el cuerpo
+    assert 8 < fisica.perdida_persona_db() < 20 < 25 * fisica.atenuacion_db_por_cm()
+
+
+def test_debye_agua():
+    assert fisica.frecuencia_pico_perdidas() / 1e9 == pytest.approx(19.2, abs=0.2)
+    e1, e2 = fisica.permitividad_debye(fisica.frecuencia_pico_perdidas())
+    # En el pico, ε'' = (εs − ε∞)/2
+    assert e2 == pytest.approx((fisica.AGUA_EPS_S - fisica.AGUA_EPS_INF) / 2)
+
+
+def test_dos_rayos():
+    assert fisica.distancia_quiebre(1, 1) == pytest.approx(32.6, abs=0.2)
+    # Lejos del quiebre: PL ≈ 40·log10(d) − 20·log10(ht·hr)
+    assert fisica.perdida_dos_rayos_db(1000) == pytest.approx(120, abs=0.5)
+
+
+def test_distancia_desde_rssi_es_inversa():
+    d, dmin, dmax = fisica.distancia_desde_rssi(fisica.rssi_log_distancia(7, -55, 2.2), -55, 2.2, 3)
+    assert d == pytest.approx(7)
+    assert dmax / d == pytest.approx(d / dmin) == pytest.approx(10 ** (3 / 22))
+
+
+def test_alcance_predicho():
+    d = fisica.alcance_predicho(-55, 2.2)
+    assert fisica.rssi_log_distancia(d, -55, 2.2) == pytest.approx(-95)
+
+
+def test_factor_k_rice_recupera_k():
+    from ivy_rssi.simulador import desvanecimiento_rice_db
+    rng = np.random.default_rng(0)
+    for k in [0.5, 3, 10]:
+        assert fisica.factor_k_rice(desvanecimiento_rice_db(k, 20000, rng)) == pytest.approx(k, rel=0.15)
+    # Rayleigh puro (K = 0)
+    assert fisica.factor_k_rice(desvanecimiento_rice_db(0, 20000, rng)) < 0.2
+
+
+def test_sar_por_debajo_del_limite():
+    assert fisica.sar_cota_w_kg() == pytest.approx(0.794, abs=0.01)
+    assert fisica.sar_cota_w_kg() < 2.0

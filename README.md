@@ -21,17 +21,41 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-## Uso rápido: todo de una sola pasada
+## El programa
 
 ```bash
-python -m ivy_rssi                    # mide los 5 experimentos, analiza y grafica
-python -m ivy_rssi E1 E2              # solo esos
-python -m ivy_rssi --simular --auto   # demo sin llavero, para ver cómo queda
+python -m ivy_rssi              # con el llavero
+python -m ivy_rssi --simular    # sin llavero, para practicar
 ```
 
-Pide los datos de la sesión una vez y recorre los experimentos. Al final imprime los
-resultados y deja las figuras en `figuras/<fecha-hora>/`. Si lo interrumpes con Ctrl+C,
-analiza lo que alcanzó a medir.
+Al entrar pide los datos de la sesión (portátil, alturas, lugar...) una sola vez y muestra
+un menú:
+
+```
+  1) E1  RSSI vs. distancia
+  2) E2  El cuerpo como obstáculo
+  3) E3  Patrón de radiación
+  4) E4  Antena vs. batería
+  5) E5  Alcance máximo
+  ─────
+  6) Resultados, figuras e INFORME de todo lo medido
+  7) Buscador: ¿dónde está el llavero? (RSSI en vivo)
+  8) Calculadora física para una distancia
+  9) Cambiar segundos por punto
+  0) Salir
+```
+
+- **1–5:** corre la prueba guiada. Al terminar muestra sus resultados y genera sus figuras,
+  combinando las repeticiones que ya haya en `datos/`.
+- **6:** analiza todo, cruza E1 con E5 (alcance predicho contra medido) y escribe
+  `figuras/INFORME.md`, con estructura de trabajo de grado: resumen, marco teórico,
+  metodología, resultados, discusión, conclusiones y limitaciones, con tus números.
+- **7, buscador:** RSSI en vivo con una barra de frío/caliente, la distancia estimada con su
+  intervalo y si te estás acercando. Usa el modelo calibrado en tu E1.
+- **8, calculadora:** ficha física para una distancia: λ, Friis, dos rayos, zona de Fresnel,
+  RSSI y margen esperados, alcance, penetración en tejido, difracción por una persona y SAR.
+
+Ejemplo de informe completo con datos simulados: [figuras/ejemplo/INFORME.md](figuras/ejemplo/INFORME.md).
 
 ## Uso por partes
 
@@ -52,6 +76,12 @@ python -m ivy_rssi.analisis --todo
 python -m ivy_rssi.graficas datos/E2_r1_20261005-103000.csv
 python -m ivy_rssi.graficas --todo          # todas las sesiones de datos/ → figuras/
 python -m ivy_rssi.graficas --ejemplo       # simula y grafica en figuras/ejemplo/
+
+# 4. Informe, buscador y calculadora sueltos
+python -m ivy_rssi.informe --todo           # figuras/INFORME.md
+python -m ivy_rssi.informe --ejemplo        # figuras/ejemplo/ con datos simulados
+python -m ivy_rssi.buscador [--simular]
+python -m ivy_rssi.calculadora 5            # ficha física a 5 m
 
 # Tests
 python -m pytest
@@ -83,14 +113,18 @@ El análisis escribe `datos/analisis_E1.json`, etc.
 
 ```
 ivy_rssi/
-  __main__.py      # la pasada única: medir → analizar → graficar
+  __main__.py      # el programa con menú
   experimentos.py  # los 5 experimentos y sus condiciones, en un solo lugar
   registrador.py   # escaneo BLE y protocolo guiado
   simulador.py     # datos sintéticos realistas (semilla fija)
   sesion.py        # leer/escribir CSV + JSON
-  fisica.py        # λ, Friis, log-distancia, penetración en tejido, promedios
+  fisica.py        # λ, Friis, log-distancia, tejido, Fresnel, difracción, Debye,
+                   # dos rayos, Rice, estimación de distancia, alcance, SAR
   analisis.py      # un análisis por experimento
-  graficas.py      # estilo Ivy + una función por figura
+  graficas.py      # estilo Ivy + una función por figura (datos y teoría)
+  informe.py       # INFORME.md con estructura de trabajo de grado
+  buscador.py      # modo buscador: RSSI en vivo y distancia estimada
+  calculadora.py   # ficha física para una distancia
   fuentes/         # Bricolage Grotesque e Instrument Sans (licencia OFL)
 ```
 
@@ -125,6 +159,7 @@ llavero cerca deberían ser varias por segundo.
 |---|---|---|
 | Física (λ, FSPL, δ, ajuste, IC) | ✅ tests numéricos | — |
 | Simulador, análisis, combinación de repeticiones | ✅ | — |
-| Gráficas (7 figuras × 2 formatos) | ✅ | — |
+| Gráficas (11 figuras × 2 formatos) e informe | ✅ | — |
+| Buscador y calculadora | ✅ en modo `--simular` y con un escáner BLE falso | el buscador real |
 | Protocolo guiado, guardado incremental, repetir/saltar | ✅ en modo `--simular` | — |
 | Escaneo BLE real, filtro por nombre/MAC, DuplicateData en BlueZ, tasa real | ❌ | ✅ en tu portátil |

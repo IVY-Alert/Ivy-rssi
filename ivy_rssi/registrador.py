@@ -48,9 +48,9 @@ def _crear_escaner(al_detectar):
     )
 
 
-async def _medir_ble(segundos, direccion=None):
-    """Escucha durante `segundos` y devuelve la lista de (timestamp, rssi)."""
-    muestras = []
+def crear_filtro(muestras, direccion=None):
+    """Callback para BleakScanner que agrega a `muestras` solo los paquetes
+    del llavero, como (timestamp, rssi)."""
     conocidas = set()       # direcciones que ya mostraron el nombre del llavero
     if direccion:
         conocidas.add(direccion.upper())
@@ -67,6 +67,13 @@ async def _medir_ble(segundos, direccion=None):
         if dir_ in conocidas:
             muestras.append((time.time(), anuncio.rssi))
 
+    return al_detectar
+
+
+async def _medir_ble(segundos, direccion=None):
+    """Escucha durante `segundos` y devuelve la lista de (timestamp, rssi)."""
+    muestras = []
+    al_detectar = crear_filtro(muestras, direccion)
     inicio = time.time()
     avisado = False
     async with _crear_escaner(al_detectar):
