@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+# Las figuras de cada sesión se regeneran; solo se versionan las de ejemplo.
+figuras/*
+!figuras/ejemplo/
