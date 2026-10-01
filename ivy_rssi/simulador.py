@@ -23,7 +23,11 @@ SEMILLA = 2026
 # Parámetros del "mundo" simulado.
 RSSI_1M = -55.0          # dBm a 1 m
 N_SIM = 2.2              # exponente de pérdida
-SIGMA_SOMBRA = 3.0       # dB, sombreado log-normal (por punto)
+SIGMA_SOMBRA = 3.0       # dB, sombreado log-normal (por punto) en E1 y E5
+# En E2, E3 y E4 el llavero NO cambia de sitio: el multitrayecto del pasillo
+# es casi el mismo en todas las condiciones y se cancela al comparar. Solo
+# queda una variación pequeña (mover la mano, girar el llavero unos cm).
+SIGMA_SOMBRA_FIJO = 1.0
 SIGMA_RAPIDO = 2.0       # dB, desvanecimiento rápido (por muestra)
 TASA_ANUNCIOS = 8.0      # anuncios recibidos por segundo cuando la señal es buena
 SENSIBILIDAD = -95.0     # dBm; por debajo de esto el paquete se pierde
@@ -80,7 +84,8 @@ def simular_punto(experimento, etiqueta, valor, segundos, rng, t_inicio=None):
     if t_inicio is None:
         t_inicio = time.time()
     media = rssi_esperado(experimento, etiqueta, valor)
-    sombra = rng.normal(0, SIGMA_SOMBRA)      # una sola vez por punto
+    sigma = SIGMA_SOMBRA if experimento in ("E1", "E5") else SIGMA_SOMBRA_FIJO
+    sombra = rng.normal(0, sigma)             # una sola vez por punto
 
     n_intentos = rng.poisson(TASA_ANUNCIOS * segundos)
     tiempos = np.sort(rng.uniform(0, segundos, n_intentos)) + t_inicio
