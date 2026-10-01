@@ -144,6 +144,16 @@ def _preguntar(texto, defecto=""):
     return r or defecto
 
 
+def _preguntar_numero(texto, defecto, tipo=float):
+    """Pide un número; acepta coma decimal ("1,0") y vuelve a preguntar si no es válido."""
+    while True:
+        r = _preguntar(texto, defecto).replace(",", ".")
+        try:
+            return tipo(r)
+        except ValueError:
+            print(f"  '{r}' no es un número válido.")
+
+
 def pedir_metadatos(auto, extra=None):
     """Datos de la sesión. En modo --auto usa valores por defecto sin preguntar."""
     meta = {
@@ -164,9 +174,9 @@ def pedir_metadatos(auto, extra=None):
         meta["portatil"] = _preguntar("Portátil (marca/modelo)")
         meta["fuente_alimentacion"] = _preguntar(
             "Fuente del llavero (power bank / batería / cargador)", "batería")
-        meta["altura_portatil_m"] = float(_preguntar("Altura del portátil (m)", "1.0"))
-        meta["altura_llavero_m"] = float(_preguntar("Altura del llavero (m)", "1.0"))
-        meta["repeticion"] = int(_preguntar("Número de repetición", "1"))
+        meta["altura_portatil_m"] = _preguntar_numero("Altura del portátil (m)", "1.0")
+        meta["altura_llavero_m"] = _preguntar_numero("Altura del llavero (m)", "1.0")
+        meta["repeticion"] = _preguntar_numero("Número de repetición", "1", int)
         meta["lugar"] = _preguntar("Lugar (pasillo / espacio abierto)", "pasillo")
         meta["interferencias"] = _preguntar("Wi-Fi o microondas cerca (anotar)", "")
         meta["notas"] = _preguntar("Notas libres", "")
@@ -177,18 +187,20 @@ def pedir_metadatos(auto, extra=None):
 # --- Protocolo guiado -------------------------------------------------------
 
 def registrar(experimento, carpeta="datos", segundos=30, simular=False,
-              direccion=None, auto=False, metadatos=None, rng=None):
+              direccion=None, auto=False, metadatos=None, rng=None,
+              pedir_datos=True):
     """Recorre las condiciones del experimento y guarda la sesión.
 
     Devuelve la ruta del CSV. Con auto=True no pregunta nada (útil para el
-    modo simulado y los tests).
+    modo simulado y los tests). Con pedir_datos=False usa `metadatos` tal
+    cual, sin preguntarlos (la pasada única los pide una sola vez).
     """
     from .simulador import SEMILLA
     if rng is None:
         rng = np.random.default_rng(SEMILLA)
 
     exp = EXPERIMENTOS[experimento]
-    meta = pedir_metadatos(auto, metadatos)
+    meta = pedir_metadatos(auto or not pedir_datos, metadatos)
     meta.update({"simulado": simular, "segundos_por_punto": segundos,
                  "nombre_buscado": NOMBRE_LLAVERO, "direccion": direccion})
     ruta = sesion.nueva_sesion(carpeta, experimento, meta)
@@ -246,7 +258,16 @@ def registrar(experimento, carpeta="datos", segundos=30, simular=False,
     return ruta
 
 
+def preparar_consola():
+    """En Windows, si la salida va a un archivo, los símbolos (σ, →, ⚠) podrían
+    romper el programa; con errors="replace" se cambian por '?' y sigue."""
+    for flujo in (sys.stdout, sys.stderr):
+        if hasattr(flujo, "reconfigure"):
+            flujo.reconfigure(errors="replace")
+
+
 def main(argv=None):
+    preparar_consola()
     p = argparse.ArgumentParser(description="Registra el RSSI del llavero Ivy.")
     p.add_argument("--experimento", required=True, choices=sorted(EXPERIMENTOS))
     p.add_argument("--simular", action="store_true", help="datos sintéticos, sin Bluetooth")
@@ -267,7 +288,8 @@ def main(argv=None):
     except KeyboardInterrupt:
         print("\nInterrumpido. Los puntos ya terminados están guardados.")
     except Exception as e:  # errores típicos de Bluetooth apagado o sin permisos
-        if type(e).__name__.startswith("Bleak"):
+        # En Linux sin BlueZ corriendo, dbus da FileNotFoundError/ConnectionRefusedError.
+        if type(e).__name__.startswith("Bleak") or isinstance(e, (FileNotFoundError, ConnectionError)):
             print(f"\nError de Bluetooth: {e}\n¿Está encendido el Bluetooth del portátil? "
                   "En Linux: `bluetoothctl power on`.", file=sys.stderr)
             sys.exit(1)

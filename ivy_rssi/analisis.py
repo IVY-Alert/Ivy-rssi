@@ -48,9 +48,18 @@ def _por_condicion(df, orden):
 
 # --- Un análisis por experimento --------------------------------------------
 
+def _exigir(tabla, condicion, experimento):
+    if condicion not in tabla.index:
+        raise ValueError(f"{experimento} necesita la condición de referencia "
+                         f"'{condicion}' y no se midió (¿se saltó?).")
+
+
 def analizar_e1(df):
     """Ajuste log-distancia sobre las medianas de cada (repetición, distancia)."""
     puntos = resumen_por_punto(df)
+    # Una recta con 2 puntos pasa exacto por ellos: no hay residuos ni IC.
+    if puntos["valor_condicion"].nunique() < 3:
+        raise ValueError("E1 necesita al menos 3 distancias distintas para el ajuste.")
     ajuste = fisica.ajustar_log_distancia(puntos["valor_condicion"], puntos["mediana"])
     puntos["residuo"] = ajuste["residuos"]
     # Friis "absoluto": con +9 dBm y antenas ideales de 0 dBi esperaríamos
@@ -71,6 +80,7 @@ def analizar_e2(df):
     """Atenuación de cada obstáculo respecto a la línea de vista."""
     orden = [c[0] for c in EXPERIMENTOS["E2"]["condiciones"]]
     t = _por_condicion(df, orden)
+    _exigir(t, "linea_de_vista", "E2")
     referencia = t.loc["linea_de_vista", "mediana"]
     t["atenuacion_db"] = referencia - t["mediana"]
     t["cm_musculo_equivalentes"] = fisica.cm_equivalentes_de_musculo(t["atenuacion_db"])
@@ -93,6 +103,7 @@ def analizar_e4(df):
     """Diferencia de cada posición de la antena contra el diseño final."""
     orden = [c[0] for c in EXPERIMENTOS["E4"]["condiciones"]]
     t = _por_condicion(df, orden)
+    _exigir(t, "antena_sobresale", "E4")
     t["diferencia_db"] = t["mediana"] - t.loc["antena_sobresale", "mediana"]
     return {"tabla": t}
 
@@ -108,9 +119,13 @@ def analizar_e5(df, metas):
         for p in m.get("puntos", []):
             filas.append({"repeticion": m.get("repeticion", 1), "distancia_m": p["valor"],
                           "n_muestras": p["n_muestras"], "duracion_s": p["duracion_s"]})
+    if not filas or not any(f["n_muestras"] for f in filas):
+        raise ValueError("E5 no tiene ningún punto con señal.")
     t = pd.DataFrame(filas).groupby("distancia_m", as_index=False)[["n_muestras", "duracion_s"]].sum()
     t["tasa_hz"] = fisica.tasa_paquetes(t["n_muestras"], t["duracion_s"])
-    t["tasa_normalizada"] = fisica.tasa_normalizada(t["tasa_hz"])
+    # Normalizamos respecto al punto más cercano CON señal (si el primero
+    # se midió con 0 muestras, dividir por él daría infinito).
+    t["tasa_normalizada"] = t["tasa_hz"] / t.loc[t["n_muestras"] > 0, "tasa_hz"].iloc[0]
 
     medianas = df.groupby("valor_condicion")["rssi_dbm"].median()
     t["mediana_dbm"] = t["distancia_m"].map(medianas)
@@ -125,7 +140,9 @@ def analizar_e5(df, metas):
 
 def analizar(df, metas):
     """Despacha según el experimento (todas las filas deben ser del mismo)."""
-    experimentos = df["experimento"].unique()
+    if df.empty and not any(m.get("puntos") for m in metas):
+        raise ValueError("la sesión no tiene ninguna muestra.")
+    experimentos = df["experimento"].unique() if not df.empty else [metas[0]["experimento"]]
     if len(experimentos) != 1:
         raise ValueError(f"Se mezclaron experimentos: {list(experimentos)}")
     exp = experimentos[0]
@@ -211,7 +228,12 @@ def analizar_archivos(rutas, guardar=True):
     resultados = {}
     for exp, grupo in agrupar_sesiones(rutas).items():
         df, metas = sesion.cargar(grupo)
-        res = analizar(df, metas)
+        try:
+            res = analizar(df, metas)
+        except ValueError as e:
+            # Un experimento incompleto no debe impedir analizar los demás.
+            print(f"\n=== {exp}: no se puede analizar: {e}")
+            continue
         imprimir(res)
         if guardar:
             print(f"  → {guardar_json(res, grupo[0].parent)}")
@@ -220,6 +242,8 @@ def analizar_archivos(rutas, guardar=True):
 
 
 def main(argv=None):
+    from .registrador import preparar_consola
+    preparar_consola()
     p = argparse.ArgumentParser(description="Analiza sesiones de RSSI.")
     p.add_argument("csv", nargs="*", help="uno o varios CSV de sesión")
     p.add_argument("--todo", action="store_true", help="todas las sesiones de --carpeta")

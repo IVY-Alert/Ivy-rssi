@@ -21,7 +21,19 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-## Uso
+## Uso rápido: todo de una sola pasada
+
+```bash
+python -m ivy_rssi                    # mide los 5 experimentos, analiza y grafica
+python -m ivy_rssi E1 E2              # solo esos
+python -m ivy_rssi --simular --auto   # demo sin llavero, para ver cómo queda
+```
+
+Pide los datos de la sesión una vez y recorre los experimentos. Al final imprime los
+resultados y deja las figuras en `figuras/<fecha-hora>/`. Si lo interrumpes con Ctrl+C,
+analiza lo que alcanzó a medir.
+
+## Uso por partes
 
 ```bash
 # 1. Registrar (real, con el llavero encendido y SIN conectar al celular)
@@ -71,6 +83,7 @@ El análisis escribe `datos/analisis_E1.json`, etc.
 
 ```
 ivy_rssi/
+  __main__.py      # la pasada única: medir → analizar → graficar
   experimentos.py  # los 5 experimentos y sus condiciones, en un solo lugar
   registrador.py   # escaneo BLE y protocolo guiado
   simulador.py     # datos sintéticos realistas (semilla fija)

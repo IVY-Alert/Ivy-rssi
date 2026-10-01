@@ -156,9 +156,12 @@ def _formato_metros(x, _):
 # Cada una recibe el resultado de analisis.analizar() y devuelve la figura.
 
 def _medianas_e1(res):
-    """Mediana y cuartiles por distancia juntando todas las repeticiones."""
-    p = res["puntos"].groupby("valor_condicion")["mediana"]
-    return p.median().index.values, p.median().values, p.min().values, p.max().values
+    """Por distancia: mediana de las repeticiones y el rango que cubren sus
+    cuartiles (p25 más bajo y p75 más alto). Con una sola repetición, las
+    barras son el rango intercuartil de las muestras."""
+    g = res["puntos"].groupby("valor_condicion")
+    med = g["mediana"].median()
+    return med.index.values, med.values, g["p25"].min().values, g["p75"].max().values
 
 
 def fig_e1_log(res):
@@ -173,7 +176,7 @@ def fig_e1_log(res):
             label=f"Ajuste log-distancia (n = {a['n']:.2f})")
     ax.errorbar(d, med, yerr=[med - lo, hi - med], fmt="o", color=AMBAR, mec=CREMA,
                 ecolor=AMBAR_OSCURO, elinewidth=plt.rcParams["lines.linewidth"] * 0.6,
-                capsize=0, label="Medido (mediana; barras: rango entre repeticiones)")
+                capsize=0, label="Medido (mediana; barras: 50 % central de las muestras)")
 
     ax.set_xscale("log")
     ax.set_xticks(d)
@@ -352,7 +355,11 @@ def graficar_archivos(rutas_csv, carpeta_salida):
     creadas = []
     for exp, grupo in analisis.agrupar_sesiones(rutas_csv).items():
         df, metas = sesion.cargar(grupo)
-        res = analisis.analizar(df, metas)
+        try:
+            res = analisis.analizar(df, metas)
+        except ValueError as e:
+            print(f"{exp}: sin figuras ({e})")
+            continue
         for nombre, funcion in FIGURAS[exp]:
             creadas += exportar(funcion, res, nombre, carpeta_salida)
     return creadas
