@@ -3,6 +3,14 @@
 Teoría para un curso de física general, con lo que esperamos medir y una frase para el guion
 del video en cada sección. Los números salen de `ivy_rssi/fisica.py`.
 
+**Cómo leer esto.** La **Parte I** es lo esencial y usa lo que se ve en un curso de ondas:
+longitud de onda, cómo se reparte la energía con la distancia, absorción y reflexión. Con
+eso basta para el proyecto y el video. Los recuadros 🔬 y la **Parte II** son **para los
+curiosos**: física más avanzada que el programa también calcula (opción 8 del menú) por si
+alguien quiere ir más allá. No hace falta dominarla.
+
+# Parte I — Lo esencial
+
 ---
 
 ## 1. Una onda electromagnética de 2.4 GHz
@@ -22,7 +30,7 @@ girar y la fricción entre ellas disipa energía. Mito común: 2.45 GHz **no** e
 [2]. Se usa 2.45 GHz porque la banda está libre y porque la onda penetra unos centímetros en
 la comida en vez de calentar solo la superficie.
 
-**El modelo de Debye lo demuestra con números.** Los dipolos del agua tardan un tiempo
+🔬 **Para curiosos: el modelo de Debye lo demuestra con números.** Los dipolos del agua tardan un tiempo
 τ en girar para seguir al campo. Eso da una permitividad compleja [2]:
 
 $$\varepsilon(\omega) = \varepsilon_\infty + \frac{\varepsilon_s - \varepsilon_\infty}{1 + j\omega\tau},
@@ -116,7 +124,11 @@ siempre es mayor o igual, y la diferencia crece con la dispersión.
 
 ## 4. El cuerpo humano absorbe la onda
 
-El músculo es ~75 % agua con sales disueltas: un **dieléctrico con pérdidas**. Dentro de él
+**La idea:** el músculo es ~75 % agua con sales. Igual que en el horno, el agua absorbe la
+energía de la onda, que se debilita muy rápido al entrar al cuerpo: en unos 2 cm pierde la
+mayor parte. Por eso el cuerpo es casi opaco a 2.4 GHz.
+
+🔬 **Para curiosos: el cálculo.** El tejido es un **dieléctrico con pérdidas**. Dentro de él
 el campo se amortigua exponencialmente, *E*(*z*) = *E*₀ e^(−α*z*), con [5]
 
 $$\alpha = \omega\sqrt{\frac{\mu\varepsilon}{2}}\left[\sqrt{1+\left(\frac{\sigma}{\omega\varepsilon}\right)^2}-1\right]^{1/2},
@@ -139,7 +151,7 @@ el cuerpo, **lo rodea**. Llega por difracción en los bordes del cuerpo y por re
 paredes y piso. El análisis traduce cada atenuación a "cm de músculo equivalentes" solo para
 hacer visible esa diferencia. No significa que la onda atraviese esos centímetros.
 
-### 4.1 Zonas de Fresnel y difracción por filo de cuchillo
+### 🔬 4.1 Para curiosos: zonas de Fresnel y difracción por filo de cuchillo
 
 ¿Por dónde rodea la onda al cuerpo? La energía no viaja por una línea sino por la **primera
 zona de Fresnel**: el elipsoide alrededor de la línea de vista donde los caminos difieren del
@@ -249,6 +261,11 @@ otro ambiente u otra sensibilidad. La calculadora del programa da esta ficha par
 distancia.
 
 ---
+
+# Parte II — Para los curiosos
+
+Lo que sigue va más allá del curso. El programa lo calcula y lo grafica para quien quiera
+explorarlo.
 
 ## 8. Desvanecimiento rápido: la distribución de Rice
 

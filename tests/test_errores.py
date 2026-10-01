@@ -103,9 +103,8 @@ def test_menu_simulado(tmp_path, monkeypatch, capsys):
     assert "Opción no válida" in salida
     assert "diseño final" in salida and "Línea de vista" in salida
     assert "FICHA FÍSICA A 5 m" in salida
-    # E2 (2 figuras) + E4 (1) + teoría (2), en 2 formatos; y el informe.
+    # E2 (2 figuras) + E4 (1) + teoría (2), en 2 formatos.
     assert len(list((tmp_path / "figuras").glob("*.png"))) == 10
-    assert (tmp_path / "figuras" / "INFORME.md").exists()
 
 
 def test_buscador_simulado():

@@ -344,7 +344,6 @@ def fig_e5(res):
 
 def fig_e1_regla(res):
     """¿Sirve el RSSI como regla? Distancia estimada vs. distancia real."""
-    a = res["ajuste"]
     p = res["puntos"]
     factor = res["factor_incertidumbre_distancia"]
     fig, ax = plt.subplots()

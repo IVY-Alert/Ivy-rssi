@@ -122,12 +122,11 @@ tu calibración.
 
 ## Después
 
-En el programa, opción **6**: analiza todo, genera las figuras y escribe `figuras/INFORME.md`.
-Por partes:
+En el programa, opción **6**: analiza todo y genera las figuras en `figuras/`. Por partes:
 
 ```bash
 python -m ivy_rssi.analisis --todo
-python -m ivy_rssi.informe --todo
+python -m ivy_rssi.graficas --todo
 ```
 
 Copia la carpeta `datos/` a un lugar seguro (o haz commit) el mismo día.

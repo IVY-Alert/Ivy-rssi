@@ -7,7 +7,7 @@ El portátil escucha los anuncios del llavero (`GEOEXPO-ALERT`), registra el RSS
 experimentos, ajusta modelos de propagación de ondas y genera gráficas listas para el video.
 
 - **[PROTOCOLO.md](PROTOCOLO.md)**: qué hacer el día de las mediciones.
-- **[FISICA.md](FISICA.md)**: la teoría, con frases para el guion.
+- **[FISICA.md](FISICA.md)**: la teoría, con frases para el guion. Parte I, lo esencial; Parte II, para los curiosos.
 - **[figuras/ejemplo/](figuras/ejemplo/)**: todas las figuras hechas con datos simulados.
 
 ## Instalación
@@ -38,24 +38,21 @@ un menú:
   4) E4  Antena vs. batería
   5) E5  Alcance máximo
   ─────
-  6) Resultados, figuras e INFORME de todo lo medido
+  6) Resultados y figuras de todo lo medido
   7) Buscador: ¿dónde está el llavero? (RSSI en vivo)
-  8) Calculadora física para una distancia
+  8) Para curiosos: calculadora física a una distancia
   9) Cambiar segundos por punto
   0) Salir
 ```
 
 - **1–5:** corre la prueba guiada. Al terminar muestra sus resultados y genera sus figuras,
   combinando las repeticiones que ya haya en `datos/`.
-- **6:** analiza todo, cruza E1 con E5 (alcance predicho contra medido) y escribe
-  `figuras/INFORME.md`, con estructura de trabajo de grado: resumen, marco teórico,
-  metodología, resultados, discusión, conclusiones y limitaciones, con tus números.
+- **6:** analiza todo, cruza E1 con E5 (alcance predicho contra medido) y genera las
+  figuras en `figuras/`.
 - **7, buscador:** RSSI en vivo con una barra de frío/caliente, la distancia estimada con su
   intervalo y si te estás acercando. Usa el modelo calibrado en tu E1.
-- **8, calculadora:** ficha física para una distancia: λ, Friis, dos rayos, zona de Fresnel,
+- **8, calculadora (para curiosos):** ficha física para una distancia: λ, Friis, dos rayos, zona de Fresnel,
   RSSI y margen esperados, alcance, penetración en tejido, difracción por una persona y SAR.
-
-Ejemplo de informe completo con datos simulados: [figuras/ejemplo/INFORME.md](figuras/ejemplo/INFORME.md).
 
 ## Uso por partes
 
@@ -77,9 +74,7 @@ python -m ivy_rssi.graficas datos/E2_r1_20261005-103000.csv
 python -m ivy_rssi.graficas --todo          # todas las sesiones de datos/ → figuras/
 python -m ivy_rssi.graficas --ejemplo       # simula y grafica en figuras/ejemplo/
 
-# 4. Informe, buscador y calculadora sueltos
-python -m ivy_rssi.informe --todo           # figuras/INFORME.md
-python -m ivy_rssi.informe --ejemplo        # figuras/ejemplo/ con datos simulados
+# 4. Buscador y calculadora sueltos
 python -m ivy_rssi.buscador [--simular]
 python -m ivy_rssi.calculadora 5            # ficha física a 5 m
 
@@ -122,7 +117,6 @@ ivy_rssi/
                    # dos rayos, Rice, estimación de distancia, alcance, SAR
   analisis.py      # un análisis por experimento
   graficas.py      # estilo Ivy + una función por figura (datos y teoría)
-  informe.py       # INFORME.md con estructura de trabajo de grado
   buscador.py      # modo buscador: RSSI en vivo y distancia estimada
   calculadora.py   # ficha física para una distancia
   fuentes/         # Bricolage Grotesque e Instrument Sans (licencia OFL)
@@ -159,7 +153,7 @@ llavero cerca deberían ser varias por segundo.
 |---|---|---|
 | Física (λ, FSPL, δ, ajuste, IC) | ✅ tests numéricos | — |
 | Simulador, análisis, combinación de repeticiones | ✅ | — |
-| Gráficas (11 figuras × 2 formatos) e informe | ✅ | — |
+| Gráficas (11 figuras × 2 formatos) | ✅ | — |
 | Buscador y calculadora | ✅ en modo `--simular` y con un escáner BLE falso | el buscador real |
 | Protocolo guiado, guardado incremental, repetir/saltar | ✅ en modo `--simular` | — |
 | Escaneo BLE real, filtro por nombre/MAC, DuplicateData en BlueZ, tasa real | ❌ | ✅ en tu portátil |
