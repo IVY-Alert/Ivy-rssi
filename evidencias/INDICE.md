@@ -79,6 +79,22 @@ LiPo Turnigy 750 mAh desconectada; el ESP32 con el power bank. 3 repeticiones (m
 El comprobante de pago al ingeniero (también estaba en el chat) se sacó de aquí a
 `Desktop/ivy-privado/`: tiene datos bancarios y no va en el video ni en git.
 
+
+## Prototipo · fotos y videos del celular (sept–oct 2026)
+
+`prototipo_celular/`, tomados de la galería del iPhone (solo lo del proyecto).
+
+| Archivo | Qué muestra | Uso |
+|---|---|---|
+| `2026-09-22_video_primer_prototipo_boton.MP4` | Primer prototipo: ESP32 en protoboard, pulsando el botón | ✅ muy bueno para la historia del proyecto |
+| `2026-09_componentes_bateria.JPG` | LiPo, cargador TP4056 y elevador MT3608 recién comprados | ✅ |
+| `2026-09_impresora_carcasa_gcode.JPG` | Pantalla de la impresora 3D: «carcasa.gcode», 1 h 30 min, 59 g | ✅ |
+| `2026-09_impresora_filamento_rojo.JPG`, `2026-09_impresora_3d.JPG` | Impresora 3D imprimiendo la carcasa | ✅ |
+| `2026-09-30_video_carcasa_roja.MP4` | La carcasa roja impresa | ✅ |
+| `2026-10_filamento_blanco.JPG` | Rollo de filamento blanco | ✅ |
+| `2026-10-02_video_impresora_piezas_1/2.MOV` | Impresión de piezas blancas | ✅ |
+| `2026-10-05_video_multimetro_lipo.MP4` | Multímetro midiendo el voltaje de la LiPo | ✅ |
+
 ## Código escribiéndose (para la parte de desarrollo)
 
 `2026-10-05_sesion1/codigo/`: 6 clips de 19–38 s (1080p) con 3 capturas cada uno.
