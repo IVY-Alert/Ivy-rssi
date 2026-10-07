@@ -13,8 +13,8 @@ Leyenda: ✅ buena toma · ⚠️ usar con cuidado · ⛔ tramo que no se usa.
 1. Medimos la señal Bluetooth (RSSI, 2.4 GHz) del llavero Ivy en un apartamento, con tres repeticiones de 0.25 a 8 m, giros de 30° y el cuerpo como obstáculo.
 2. La señal cae con la distancia siguiendo RSSI = RSSI(1 m) − 10·n·log₁₀(d): en el pasillo **n = 1.28 ± 0.20**, menor que el 2 del espacio libre, porque las paredes guían la onda.
 3. Moverse solo 7 cm (media longitud de onda) cambia el RSSI hasta 8 dB: es el multitrayecto, la interferencia entre la onda directa y los rebotes.
-4. La antena no irradia igual hacia todos lados (**14 dB** entre la mejor y la peor orientación) y el cuerpo pegado al llavero atenúa más (**bolsillo −8 dB**) que una persona en medio (−3 dB) o un morral (−1 dB).
-5. Para el llavero: funciona de sobra dentro de una casa, conviene llevarlo en la mano o en el morral antes que en el bolsillo, y la app avisa sola (SMS y llamada) sin sacar el teléfono.
+4. La antena no irradia igual hacia todos lados (**14 dB** entre la mejor y la peor orientación); el cuerpo pegado al llavero atenúa más (**bolsillo −8 dB**) que una persona en medio (−3 dB) o un morral (−1 dB), y la batería debajo de la antena le quita **5 dB**.
+5. Para el llavero: funciona de sobra dentro de una casa, la antena debe ir siempre por fuera de la batería, conviene llevarlo en la mano o en el morral antes que en el bolsillo, y la app avisa sola (SMS y llamada) sin sacar el teléfono.
 
 ## Sesión 1 · 5 oct 2026 · E1 (RSSI vs. distancia)
 
@@ -49,13 +49,27 @@ Detalle de tramos «evitar» (primeros planos poco favorecedores) en
 | `…/pantalla/E2_cuerpo.mp4`, `E3_patron.mp4` | igual que la webcam | 19–22 min | RSSI en vivo | ✅ |
 | `…/figuras/E2_*_video.png`, `E3_*_video.png` | — | — | Atenuación del cuerpo, desvanecimiento, patrón polar | ✅ |
 
+
+## Sesión 2 (cont.) · 6 oct 2026 · E4 (antena vs. batería)
+
+LiPo Turnigy 750 mAh desconectada; el ESP32 con el power bank. 3 repeticiones (marca de 2 m, +7 cm, −7 cm).
+
+| Archivo | Hora | Qué muestra | Uso |
+|---|---|---|---|
+| `2026-10-06_sesion2/celular/foto_E4_sistema_bateria_piezas.jpg` | 21:45 | Sistema de batería del ingeniero por piezas: LiPo, TP4056, MT3608, interruptor | ✅ |
+| `…/celular/foto_E4_r1_antena_encima*.jpg`, `foto_E4_r2_antena_encima.jpg` | 21:49–22:06 | Batería debajo de la antena (de lado) | ✅ |
+| `…/celular/foto_E4_r1/r2/r3_antena_sobresale.jpg` | 21:56–22:11 | Antena por fuera, batería sobre la mitad del USB (desde arriba) | ✅ la que justifica la carcasa |
+| `…/celular/foto_E4_r1_sin_bateria.jpg` | 22:00 | Sin batería cerca | ✅ |
+| `…/camara/E4_r1/r2/r3_antena_bateria.mp4`, `…/pantalla/…` | 21:45–22:13 | Webcam y pantalla durante E4 | ✅ (sin revisar cuadro a cuadro: solo manos y banquito) |
+| `…/figuras/E4_antena_vs_bateria_video.png` | — | Barras: sobresale −63, sin batería −66, encima −68 dBm | ✅ |
+
 ## Hardware · soldadura del llavero (del ingeniero, por WhatsApp)
 
 | Archivo | Hora del envío | Qué muestra |
 |---|---|---|
-| `hardware_soldadura/WhatsApp Image 2026-10-05 at 2.48.27 PM.jpeg` | 5 oct 14:48 | Componentes sueltos: elevador de voltaje, cargador TP4056 (USB-C) y LiPo 875 mAh |
+| `hardware_soldadura/WhatsApp Image 2026-10-05 at 2.48.27 PM.jpeg` | 5 oct 14:48 | Componentes sueltos: elevador de voltaje, cargador TP4056 (USB-C) y LiPo 750 mAh |
 | `…/WhatsApp Image 2026-10-06 at 8.25.54 AM.jpeg` | 6 oct 08:25 | Conector JST en la mano |
-| `…/WhatsApp Image 2026-10-06 at 8.38.58 AM.jpeg` | 6 oct 08:38 | **«Ya quedó el sistema de la batería»**: cargador TP4056 + LiPo 875 mAh |
+| `…/WhatsApp Image 2026-10-06 at 8.38.58 AM.jpeg` | 6 oct 08:38 | **«Ya quedó el sistema de la batería»**: cargador TP4056 + LiPo 750 mAh |
 | `…/WhatsApp Video 2026-10-06 at 8.59.34 AM.mp4` | 6 oct 08:59 | Video de la soldadura (2:49) |
 | `…/WhatsApp Image 2026-10-06 at 8.59.35 AM.jpeg` | 6 oct 08:59 | Placa perforada con el interruptor y los cables |
 | `…/WhatsApp Video 2026-10-06 at 9.03.29 AM.mp4` | 6 oct 09:03 | «De cómo se hizo el resto» (4:50): módulo de carga y conectores |
@@ -80,6 +94,5 @@ El comprobante de pago al ingeniero (también estaba en el chat) se sacó de aqu
 
 ## Pendiente
 
-- **E4** (antena vs. batería): cuando llegue la batería LiPo.
 - **E5** (alcance máximo): afuera, con el internet del celular compartido al portátil.
 - Prueba real de la app (SMS y llamada automáticos) en un teléfono **con SIM**.

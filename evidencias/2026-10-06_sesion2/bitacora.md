@@ -60,3 +60,34 @@ Formato de puntos: `hora · experimento · condición · muestras · mediana · 
 - 18:54:52 · ⏹ fin grabación `E2_cuerpo` (pantalla 3.5 MB, camara 116.5 MB)
 - 18:58:12 · 📝 FIN de la sesion 2 (E3 y E2 completos). Pendientes: E5 (afuera) y E4 (al llegar la bateria LiPo), manana. Copiar los videos del celular por cable.
 - 19:04:28 · 📝 Copiados del iPhone por cable: IMG_3547 (E2, 7 min 50 s, 675 MB; en_la_mano ~1:29-1:59, bolsillo ~2:44-3:15, persona_en_medio valida ~6:22-6:53 del video). Plano bajo desde la mesa.
+- 21:45:26 · 📝 E4 antena vs bateria. Llego el sistema de bateria del ingeniero (LiPo Turnigy 750 mAh + TP4056 + MT3608 + interruptor, sin conectar al ESP32). El ESP32 sigue con el power bank en la misma posicion; la LiPo va desconectada (lo que importa es su bolsa de aluminio). Ivy cerrada en el Samsung para que el llavero anuncie. 3 repeticiones: marca 2 m, +7 cm derecha, 7 cm izquierda.
+
+### 21:45:26 — E4 repetición 1 (`E4_r1_20261006-214526.csv`)
+
+- 21:45:33 · ⏺ inicia grabación `E4_r1_antena_bateria`
+- 21:49:18 · 📝 E4 r1: la primera colocacion dejo la LiPo debajo del extremo de la antena (contrario al USB): se mide como antena_encima. Fotos: celular/foto_E4_r1_antena_encima*.jpg
+- 21:49:51 · E4 · antena_encima · n=71 · mediana -67 dBm · 2.4 muestras/s
+- 21:56:10 · 📝 E4 r1 antena_sobresale: LiPo encima de la mitad del USB, pegada con cinta y papel; modulo y antena destapados. Foto: celular/foto_E4_r1_antena_sobresale.jpg
+- 21:56:42 · E4 · antena_sobresale · n=83 · mediana -59 dBm · 2.7 muestras/s
+- 21:59:33 · 📝 E4 r1 sin_bateria: LiPo retirada a mas de 30 cm; power bank debajo del banquito (en el asiento). Foto: celular/foto_E4_r1_sin_bateria.jpg
+- 22:00:05 · E4 · sin_bateria · n=77 · mediana -61 dBm · 2.5 muestras/s
+- 22:00:24 · ⏹ fin grabación `E4_r1_antena_bateria` (pantalla 2.7 MB, camara 90.7 MB)
+
+### 22:00:25 — E4 repetición 2 (`E4_r2_20261006-220025.csv`)
+
+- 22:00:26 · 📝 E4 r2: silla corrida ~7 cm a la derecha. Orden: sin_bateria, antena_sobresale, antena_encima.
+- 22:00:32 · ⏺ inicia grabación `E4_r2_antena_bateria`
+- 22:02:10 · E4 · sin_bateria · n=89 · mediana -68 dBm · 2.9 muestras/s
+- 22:04:09 · E4 · antena_sobresale · n=75 · mediana -65 dBm · 2.5 muestras/s
+- 22:07:38 · E4 · antena_encima · n=87 · mediana -69 dBm · 2.9 muestras/s
+- 22:07:59 · ⏹ fin grabación `E4_r2_antena_bateria` (pantalla 1.5 MB, camara 48.6 MB)
+
+### 22:08:00 — E4 repetición 3 (`E4_r3_20261006-220800.csv`)
+
+- 22:08:01 · 📝 E4 r3: silla ~7 cm a la izquierda de la marca de 2 m. Orden: antena_encima, antena_sobresale, sin_bateria.
+- 22:08:07 · ⏺ inicia grabación `E4_r3_antena_bateria`
+- 22:10:39 · E4 · antena_encima · n=79 · mediana -69 dBm · 2.6 muestras/s
+- 22:12:20 · E4 · antena_sobresale · n=59 · mediana -64 dBm · 1.9 muestras/s
+- 22:13:34 · E4 · sin_bateria · n=53 · mediana -65 dBm · 1.8 muestras/s
+- 22:13:40 · ⏹ fin grabación `E4_r3_antena_bateria` (pantalla 1.2 MB, camara 35.2 MB)
+- 22:14:18 · 📝 FIN E4 (3 repeticiones). Combinado: antena_sobresale -63 dBm, sin_bateria -66 (-3 dB), antena_encima -68 (-5 dB). Encima fue la peor en las 3 repeticiones (-8, -4, -5 dB vs sobresale). Conclusion: antena siempre por fuera de la bateria.

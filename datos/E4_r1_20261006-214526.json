@@ -1,0 +1,57 @@
+{
+  "portatil": "Lenovo ThinkPad L14 Gen 3 (Bluetooth RZ616), antenas en el borde superior de la pantalla",
+  "fuente_alimentacion": "power bank (pegado al ESP32, gira con el llavero en E3)",
+  "altura_portatil_m": 0.695,
+  "altura_llavero_m": 0.695,
+  "lugar": "mismo montaje de la sesion 1: sala del apartamento, sillas tapizadas, banquito plastico; marcas de cinta en el piso de la sesion 1",
+  "referencia_distancias": "borde superior de la pantalla; desfase hasta el borde del asiento a = 17.5 ± 0.5 cm",
+  "llavero_mac": "3C:8A:1F:A7:31:DA",
+  "interferencias": "Wi-Fi del portatil en 5 GHz; BLE de televisores y nevera del edificio",
+  "notas": "Sesion 2 (dia siguiente). Orden: E3 -> E2 -> E5; E4 al final cuando llegue la bateria LiPo. Perro con una pata lastimada: minima intervencion en la casa.",
+  "fecha": "2026-10-06 21:45:26",
+  "repeticion": 1,
+  "simulado": false,
+  "segundos_por_punto": 30,
+  "nombre_buscado": "GEOEXPO-ALERT",
+  "direccion": null,
+  "carpeta_evidencias": "evidencias/2026-10-06_sesion2",
+  "experimento": "E4",
+  "puntos": [
+    {
+      "condicion": "antena_encima",
+      "valor": null,
+      "n_muestras": 71,
+      "duracion_s": 30.21,
+      "tasa_hz": 2.35,
+      "mediana_dbm": -67,
+      "promedio_dbm": -67.32,
+      "t_inicio": 1791341360.895,
+      "t_fin": 1791341391.106,
+      "descartado": false
+    },
+    {
+      "condicion": "antena_sobresale",
+      "valor": null,
+      "n_muestras": 83,
+      "duracion_s": 30.32,
+      "tasa_hz": 2.74,
+      "mediana_dbm": -59,
+      "promedio_dbm": -59.57,
+      "t_inicio": 1791341772.492,
+      "t_fin": 1791341802.812,
+      "descartado": false
+    },
+    {
+      "condicion": "sin_bateria",
+      "valor": null,
+      "n_muestras": 77,
+      "duracion_s": 30.32,
+      "tasa_hz": 2.54,
+      "mediana_dbm": -61,
+      "promedio_dbm": -60.91,
+      "t_inicio": 1791341975.5800002,
+      "t_fin": 1791342005.898,
+      "descartado": false
+    }
+  ]
+}
