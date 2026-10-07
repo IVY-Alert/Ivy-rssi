@@ -6,3 +6,14 @@ venv/
 # Las figuras de cada sesión se regeneran; solo se versionan las de ejemplo.
 figuras/*
 !figuras/ejemplo/
+
+# Evidencias: los videos y fotos pesados van a Google Drive, no a git.
+evidencias/**/*.mp4
+evidencias/**/*.mov
+evidencias/**/*.MOV
+evidencias/**/*.MP4
+evidencias/**/celular/
+evidencias/**/.grabando/
+evidencias/.sesion_actual.json
+evidencias/**/camara/*.jpg
+evidencias/**/*.HEIC
