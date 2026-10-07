@@ -1,0 +1,93 @@
+{
+  "portatil": "Lenovo ThinkPad L14 Gen 3 (Bluetooth RZ616), antenas en el borde superior de la pantalla",
+  "fuente_alimentacion": "power bank (pegado al ESP32, gira con el llavero en E3)",
+  "altura_portatil_m": 0.695,
+  "altura_llavero_m": 0.695,
+  "lugar": "mismo montaje de la sesion 1: sala del apartamento, sillas tapizadas, banquito plastico; marcas de cinta en el piso de la sesion 1",
+  "referencia_distancias": "borde superior de la pantalla; desfase hasta el borde del asiento a = 17.5 ± 0.5 cm",
+  "llavero_mac": "3C:8A:1F:A7:31:DA",
+  "interferencias": "Wi-Fi del portatil en 5 GHz; BLE de televisores y nevera del edificio",
+  "notas": "Sesion 2 (dia siguiente). Orden: E3 -> E2 -> E5; E4 al final cuando llegue la bateria LiPo. Perro con una pata lastimada: minima intervencion en la casa.",
+  "fecha": "2026-10-06 18:35:33",
+  "repeticion": 1,
+  "simulado": false,
+  "segundos_por_punto": 30,
+  "nombre_buscado": "GEOEXPO-ALERT",
+  "direccion": null,
+  "carpeta_evidencias": "evidencias/2026-10-06_sesion2",
+  "experimento": "E2",
+  "puntos": [
+    {
+      "condicion": "linea_de_vista",
+      "valor": null,
+      "n_muestras": 99,
+      "duracion_s": 30.34,
+      "tasa_hz": 3.26,
+      "mediana_dbm": -61,
+      "promedio_dbm": -61.54,
+      "t_inicio": 1791329811.313,
+      "t_fin": 1791329841.656,
+      "descartado": false
+    },
+    {
+      "condicion": "en_la_mano",
+      "valor": null,
+      "n_muestras": 113,
+      "duracion_s": 30.32,
+      "tasa_hz": 3.73,
+      "mediana_dbm": -65,
+      "promedio_dbm": -64.68,
+      "t_inicio": 1791330287.066,
+      "t_fin": 1791330317.3869998,
+      "descartado": false
+    },
+    {
+      "condicion": "bolsillo",
+      "valor": null,
+      "n_muestras": 59,
+      "duracion_s": 30.22,
+      "tasa_hz": 1.95,
+      "mediana_dbm": -69,
+      "promedio_dbm": -68.9,
+      "t_inicio": 1791330362.665,
+      "t_fin": 1791330392.885,
+      "descartado": false
+    },
+    {
+      "condicion": "persona_en_medio",
+      "valor": null,
+      "n_muestras": 71,
+      "duracion_s": 30.28,
+      "tasa_hz": 2.35,
+      "mediana_dbm": -63,
+      "promedio_dbm": -62.39,
+      "t_inicio": 1791330503.04,
+      "t_fin": 1791330533.319,
+      "descartado": true
+    },
+    {
+      "condicion": "persona_en_medio",
+      "valor": null,
+      "n_muestras": 55,
+      "duracion_s": 30.34,
+      "tasa_hz": 1.81,
+      "mediana_dbm": -64,
+      "promedio_dbm": -63.98,
+      "t_inicio": 1791330580.723,
+      "t_fin": 1791330611.0609999,
+      "descartado": false
+    },
+    {
+      "condicion": "morral",
+      "valor": null,
+      "n_muestras": 83,
+      "duracion_s": 30.28,
+      "tasa_hz": 2.74,
+      "mediana_dbm": -62,
+      "promedio_dbm": -61.66,
+      "t_inicio": 1791330847.483,
+      "t_fin": 1791330877.7689998,
+      "descartado": false
+    }
+  ]
+}
