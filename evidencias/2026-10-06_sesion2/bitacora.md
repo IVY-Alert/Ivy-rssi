@@ -91,3 +91,4 @@ Formato de puntos: `hora · experimento · condición · muestras · mediana · 
 - 22:13:34 · E4 · sin_bateria · n=53 · mediana -65 dBm · 1.8 muestras/s
 - 22:13:40 · ⏹ fin grabación `E4_r3_antena_bateria` (pantalla 1.2 MB, camara 35.2 MB)
 - 22:14:18 · 📝 FIN E4 (3 repeticiones). Combinado: antena_sobresale -63 dBm, sin_bateria -66 (-3 dB), antena_encima -68 (-5 dB). Encima fue la peor en las 3 repeticiones (-8, -4, -5 dB vs sobresale). Conclusion: antena siempre por fuera de la bateria.
+- 12:47:21 · 📝 2026-10-07 ~12:19: corto entre VIN y OUT del sistema de bateria al manipular cables (video evidencias/IMPORTANTE/2026-10-07_IMPORTANTE_corto_circuito.mp4). El ESP32 estaba desconectado. Pendiente revisar MT3608, TP4056 y LiPo antes de volver a conectar.

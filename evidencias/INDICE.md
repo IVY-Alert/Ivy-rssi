@@ -63,6 +63,18 @@ LiPo Turnigy 750 mAh desconectada; el ESP32 con el power bank. 3 repeticiones (m
 | `…/camara/E4_r1/r2/r3_antena_bateria.mp4`, `…/pantalla/…` | 21:45–22:13 | Webcam y pantalla durante E4 | ✅ (sin revisar cuadro a cuadro: solo manos y banquito) |
 | `…/figuras/E4_antena_vs_bateria_video.png` | — | Barras: sobresale −63, sin batería −66, encima −68 dBm | ✅ |
 
+
+## Sistema eléctrico · 7 oct 2026 (batería, alerta y corto)
+
+`2026-10-07_sistema_electrico/`: 6 clips y los 3 videos completos. Los segundos exactos de
+cada momento están en [`MOMENTOS.md`](2026-10-07_sistema_electrico/MOMENTOS.md).
+
+| Clip | Qué muestra |
+|---|---|
+| `clips/02_ajuste_elevador_11V_a_5V.mp4` | Multímetro bajando de 11 V a 5.00 V |
+| `clips/04_ALERTA_con_bateria_pantalla_roja.mp4` | ⭐ El llavero con batería dispara la alerta en el celular |
+| `clips/05_IMPORTANTE_corto_circuito.mp4` | ⚠️ El corto VIN–OUT (para «dificultades y aprendizajes») |
+
 ## Hardware · soldadura del llavero (del ingeniero, por WhatsApp)
 
 | Archivo | Hora del envío | Qué muestra |
