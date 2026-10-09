@@ -1,0 +1,150 @@
+{
+  "tabla": [
+    {
+      "index": 0,
+      "distancia_m": 2.05,
+      "n_muestras": 71,
+      "duracion_s": 15.52,
+      "tasa_hz": 4.574742268,
+      "tasa_normalizada": 1.0,
+      "mediana_dbm": -58.0
+    },
+    {
+      "index": 1,
+      "distancia_m": 4.1,
+      "n_muestras": 29,
+      "duracion_s": 16.45,
+      "tasa_hz": 1.7629179331,
+      "tasa_normalizada": 0.3853589623,
+      "mediana_dbm": -75.0
+    },
+    {
+      "index": 2,
+      "distancia_m": 6.15,
+      "n_muestras": 13,
+      "duracion_s": 5.32,
+      "tasa_hz": 2.4436090226,
+      "tasa_normalizada": 0.5341522821,
+      "mediana_dbm": -79.0
+    },
+    {
+      "index": 3,
+      "distancia_m": 8.2,
+      "n_muestras": 22,
+      "duracion_s": 15.79,
+      "tasa_hz": 1.3932868904,
+      "tasa_normalizada": 0.30456074,
+      "mediana_dbm": -78.0
+    },
+    {
+      "index": 4,
+      "distancia_m": 10.25,
+      "n_muestras": 22,
+      "duracion_s": 14.13,
+      "tasa_hz": 1.5569709837,
+      "tasa_normalizada": 0.3403406995,
+      "mediana_dbm": -84.0
+    },
+    {
+      "index": 5,
+      "distancia_m": 12.3,
+      "n_muestras": 5,
+      "duracion_s": 11.46,
+      "tasa_hz": 0.4363001745,
+      "tasa_normalizada": 0.0953715311,
+      "mediana_dbm": -79.0
+    },
+    {
+      "index": 6,
+      "distancia_m": 14.35,
+      "n_muestras": 2,
+      "duracion_s": 10.92,
+      "tasa_hz": 0.1831501832,
+      "tasa_normalizada": 0.0400350823,
+      "mediana_dbm": -86.0
+    },
+    {
+      "index": 7,
+      "distancia_m": 16.4,
+      "n_muestras": 2,
+      "duracion_s": 11.99,
+      "tasa_hz": 0.1668056714,
+      "tasa_normalizada": 0.0364623101,
+      "mediana_dbm": -90.0
+    },
+    {
+      "index": 8,
+      "distancia_m": 18.45,
+      "n_muestras": 2,
+      "duracion_s": 13.87,
+      "tasa_hz": 0.1441961067,
+      "tasa_normalizada": 0.0315200504,
+      "mediana_dbm": -89.0
+    },
+    {
+      "index": 9,
+      "distancia_m": 20.5,
+      "n_muestras": 3,
+      "duracion_s": 6.07,
+      "tasa_hz": 0.4942339374,
+      "tasa_normalizada": 0.1080353621,
+      "mediana_dbm": -90.0
+    },
+    {
+      "index": 10,
+      "distancia_m": 22.55,
+      "n_muestras": 0,
+      "duracion_s": 8.7,
+      "tasa_hz": 0.0,
+      "tasa_normalizada": 0.0,
+      "mediana_dbm": null
+    },
+    {
+      "index": 11,
+      "distancia_m": 24.6,
+      "n_muestras": 0,
+      "duracion_s": 18.44,
+      "tasa_hz": 0.0,
+      "tasa_normalizada": 0.0,
+      "mediana_dbm": null
+    },
+    {
+      "index": 12,
+      "distancia_m": 26.65,
+      "n_muestras": 0,
+      "duracion_s": 31.1,
+      "tasa_hz": 0.0,
+      "tasa_normalizada": 0.0,
+      "mediana_dbm": null
+    }
+  ],
+  "alcance_max_m": 20.5,
+  "distancia_tasa_50_m": 4.1,
+  "experimento": "E5",
+  "sesiones": [
+    "E5_r1_20261009-recorrido"
+  ],
+  "metadatos": {
+    "fecha": "2026-10-09 15:29:31",
+    "lugar": "calle interna del conjunto, al aire libre, carros parqueados a los lados",
+    "llavero": "en la mano, brazo estirado hacia el portatil, a la altura de la pantalla",
+    "portatil": "sobre banquito de plastico",
+    "fuente": "power bank",
+    "distancia": "pasos de 41 cm (5 pasos = 2.05 m)",
+    "repeticion": 1,
+    "simulado": false,
+    "segundos_por_punto": null,
+    "nombre_buscado": "GEOEXPO-ALERT",
+    "direccion": null,
+    "carpeta_evidencias": "evidencias/2026-10-09_E5",
+    "experimento": "E5",
+    "nota": "Recorrido continuo: distancias reconstruidas con la webcam (pasos de 0.41 m); ver reconstruir.py",
+    "sesion": "E5_r1_20261009-recorrido"
+  },
+  "carpeta": "datos",
+  "alcance_predicho_e1_m": 729.6524048558334,
+  "modelo_e1": {
+    "rssi_d0": -58.238515222493945,
+    "n": 1.2839676961698214
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "fecha": "2026-10-09 15:25:04",
+  "lugar": "calle interna del conjunto, al aire libre, carros parqueados a los lados",
+  "llavero": "en la mano, brazo estirado hacia el portatil, a la altura de la pantalla",
+  "portatil": "sobre banquito de plastico",
+  "fuente": "power bank",
+  "distancia": "pasos de 41 cm (5 pasos = 2.05 m)",
+  "repeticion": 1,
+  "simulado": false,
+  "segundos_por_punto": 15.0,
+  "nombre_buscado": "GEOEXPO-ALERT",
+  "direccion": null,
+  "carpeta_evidencias": "evidencias/2026-10-09_E5",
+  "experimento": "E5",
+  "puntos": [
+    {
+      "condicion": "5 pasos (2.05 m)",
+      "valor": 2.05,
+      "n_muestras": 71,
+      "duracion_s": 15.52,
+      "tasa_hz": 4.58,
+      "mediana_dbm": -58,
+      "promedio_dbm": -58.55,
+      "t_inicio": 1791577507.3500001,
+      "t_fin": 1791577522.868,
+      "descartado": false
+    }
+  ]
+}

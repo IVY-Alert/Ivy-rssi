@@ -64,6 +64,28 @@ LiPo Turnigy 750 mAh desconectada; el ESP32 con el power bank. 3 repeticiones (m
 | `…/figuras/E4_antena_vs_bateria_video.png` | — | Barras: sobresale −63, sin batería −66, encima −68 dBm | ✅ |
 
 
+## Sesión 3 · 9 oct 2026 · E5 (alcance máximo)
+
+Calle interna del parqueadero del conjunto, al aire libre, recta y con carros parqueados a los
+lados. Portátil sobre el banquito de plástico (webcam a ras del piso mirando la calle); llavero
+con el power bank, en la mano con el brazo estirado hacia el portátil. Distancias en pasos de
+0.41 m (5 pasos medidos = 2.05 m): 30 s quieto, 5 pasos más. El portátil midió sin parar en
+bloques de 5 s y las distancias se reconstruyeron con la webcam (altura de la cabeza en la
+imagen); ver `2026-10-09_E5/datos/reconstruir.py`. Precisión: ±1 punto (±2 m).
+
+**Resultado:** señal estable hasta ~10 m (−84 dBm), intermitente de 12 a 20 m (−86 a −90 dBm,
+0.1–0.5 paquetes/s) y **último punto con señal a 20 m**; de 22 a 27 m, 0 muestras. El modelo de
+E1 (n = 1.28, medido en el pasillo) predecía 730 m: la diferencia sale de que afuera no hay
+guía de onda, el portátil y el llavero estaban bajos (el quiebre de dos rayos llega mucho antes
+de 33 m) y la mano atenúa ~4 dB (E2).
+
+| Archivo | Hora | Qué muestra | Uso |
+|---|---|---|---|
+| `2026-10-09_E5/camara/E5_recorrido4.mp4` | 15:30–15:43 | Webcam a ras del piso: la calle y el recorrido alejándose hasta el fondo | ✅ toma larga alejándose (de lejos se ve pequeño) |
+| `…/pantalla/E5_recorrido4.mp4` | 15:30–15:43 | Pantalla con los bloques midiendo | ✅ |
+| `…/datos/crudo/` | — | Bloques de 5 s sin procesar y el punto de 2.05 m | datos |
+| `figuras/E5_alcance_video.png` | — | Tasa de paquetes y RSSI contra la distancia | ✅ |
+
 ## Sistema eléctrico · 7 oct 2026 (batería, alerta y corto)
 
 `2026-10-07_sistema_electrico/`: 6 clips y los 3 videos completos. Los segundos exactos de
@@ -122,5 +144,4 @@ El comprobante de pago al ingeniero (también estaba en el chat) se sacó de aqu
 
 ## Pendiente
 
-- **E5** (alcance máximo): afuera, con el internet del celular compartido al portátil.
 - Prueba real de la app (SMS y llamada automáticos) en un teléfono **con SIM**.

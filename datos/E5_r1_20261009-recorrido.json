@@ -1,0 +1,150 @@
+{
+ "fecha": "2026-10-09 15:29:31",
+ "lugar": "calle interna del conjunto, al aire libre, carros parqueados a los lados",
+ "llavero": "en la mano, brazo estirado hacia el portatil, a la altura de la pantalla",
+ "portatil": "sobre banquito de plastico",
+ "fuente": "power bank",
+ "distancia": "pasos de 41 cm (5 pasos = 2.05 m)",
+ "repeticion": 1,
+ "simulado": false,
+ "segundos_por_punto": null,
+ "nombre_buscado": "GEOEXPO-ALERT",
+ "direccion": null,
+ "carpeta_evidencias": "evidencias/2026-10-09_E5",
+ "experimento": "E5",
+ "puntos": [
+  {
+   "condicion": "5 pasos (2.05 m)",
+   "valor": 2.05,
+   "n_muestras": 71,
+   "duracion_s": 15.52,
+   "tasa_hz": 4.58,
+   "mediana_dbm": -58,
+   "promedio_dbm": -58.55,
+   "t_inicio": 1791577507.3500001,
+   "t_fin": 1791577522.868,
+   "descartado": false
+  },
+  {
+   "condicion": "10 pasos (4.1 m)",
+   "valor": 4.1,
+   "n_muestras": 29,
+   "duracion_s": 16.45,
+   "tasa_hz": 1.76,
+   "mediana_dbm": -75,
+   "promedio_dbm": -76.07,
+   "descartado": false
+  },
+  {
+   "condicion": "15 pasos (6.15 m)",
+   "valor": 6.15,
+   "n_muestras": 13,
+   "duracion_s": 5.32,
+   "tasa_hz": 2.44,
+   "mediana_dbm": -79,
+   "promedio_dbm": -78.46,
+   "descartado": false
+  },
+  {
+   "condicion": "20 pasos (8.2 m)",
+   "valor": 8.2,
+   "n_muestras": 22,
+   "duracion_s": 15.79,
+   "tasa_hz": 1.39,
+   "mediana_dbm": -78.0,
+   "promedio_dbm": -80.09,
+   "descartado": false
+  },
+  {
+   "condicion": "25 pasos (10.25 m)",
+   "valor": 10.25,
+   "n_muestras": 22,
+   "duracion_s": 14.13,
+   "tasa_hz": 1.56,
+   "mediana_dbm": -84.0,
+   "promedio_dbm": -84.5,
+   "descartado": false
+  },
+  {
+   "condicion": "30 pasos (12.3 m)",
+   "valor": 12.3,
+   "n_muestras": 5,
+   "duracion_s": 11.46,
+   "tasa_hz": 0.44,
+   "mediana_dbm": -79,
+   "promedio_dbm": -79.6,
+   "descartado": false
+  },
+  {
+   "condicion": "35 pasos (14.35 m)",
+   "valor": 14.35,
+   "n_muestras": 2,
+   "duracion_s": 10.92,
+   "tasa_hz": 0.18,
+   "mediana_dbm": -86.0,
+   "promedio_dbm": -86,
+   "descartado": false
+  },
+  {
+   "condicion": "40 pasos (16.4 m)",
+   "valor": 16.4,
+   "n_muestras": 2,
+   "duracion_s": 11.99,
+   "tasa_hz": 0.17,
+   "mediana_dbm": -90.0,
+   "promedio_dbm": -90,
+   "descartado": false
+  },
+  {
+   "condicion": "45 pasos (18.45 m)",
+   "valor": 18.45,
+   "n_muestras": 2,
+   "duracion_s": 13.87,
+   "tasa_hz": 0.14,
+   "mediana_dbm": -89.0,
+   "promedio_dbm": -89,
+   "descartado": false
+  },
+  {
+   "condicion": "50 pasos (20.5 m)",
+   "valor": 20.5,
+   "n_muestras": 3,
+   "duracion_s": 6.07,
+   "tasa_hz": 0.49,
+   "mediana_dbm": -90,
+   "promedio_dbm": -91,
+   "descartado": false
+  },
+  {
+   "condicion": "55 pasos (22.55 m)",
+   "valor": 22.55,
+   "n_muestras": 0,
+   "duracion_s": 8.7,
+   "tasa_hz": 0.0,
+   "mediana_dbm": null,
+   "promedio_dbm": null,
+   "descartado": false
+  },
+  {
+   "condicion": "60 pasos (24.6 m)",
+   "valor": 24.6,
+   "n_muestras": 0,
+   "duracion_s": 18.44,
+   "tasa_hz": 0.0,
+   "mediana_dbm": null,
+   "promedio_dbm": null,
+   "descartado": false
+  },
+  {
+   "condicion": "65 pasos (26.65 m)",
+   "valor": 26.65,
+   "n_muestras": 0,
+   "duracion_s": 31.1,
+   "tasa_hz": 0.0,
+   "mediana_dbm": null,
+   "promedio_dbm": null,
+   "descartado": false
+  }
+ ],
+ "nota": "Recorrido continuo: distancias reconstruidas con la webcam (pasos de 0.41 m); ver reconstruir.py"
+}
