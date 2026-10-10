@@ -2,7 +2,8 @@
 
 **Resumen:** se montó el llavero con su batería (LiPo 750 mAh → cargador TP4056 → interruptor
 → elevador MT3608 a 5 V → ESP32). El elevador se ajustó a 5 V, el llavero disparó la alerta en
-el celular con la batería, hubo un **corto entre VIN y OUT del elevador** (el ESP32 estaba
+el celular con la batería, hubo un **corto: la sonda de temperatura (termopar) tocó el chip del TP4056** y eso puso en
+corto VIN y OUT del elevador (el ESP32 estaba
 desconectado y no se dañó) y en la tarde se volvió a soldar todo y funcionó.
 
 ## Clips (`clips/`)
@@ -14,7 +15,7 @@ desconectado y no se dañó) y en la tarde se volvió a soldar todo y funcionó.
 | `02_ajuste_elevador_11V_a_5V.mp4` | 2:05 | Girando la perilla: el multímetro baja de 11 V a **5.00 V** |
 | `03_conexion_al_ESP32.mp4` | 0:42 | Conexión del sistema al ESP32 |
 | `04_ALERTA_con_bateria_pantalla_roja.mp4` | 1:27 | ⭐ Se pulsa el llavero y el celular muestra la **alerta roja con la cuenta atrás** |
-| `05_IMPORTANTE_corto_circuito.mp4` | 0:32 | ⚠️ El momento del corto al manipular los cables. El multímetro está en modo temperatura (termopar): marca 44 °C y baja a 35 °C. No se ve chispa. |
+| `05_IMPORTANTE_corto_circuito.mp4` | 0:32 | ⚠️ El momento del corto: la sonda de temperatura toca el TP4056. El multímetro está en modo temperatura (termopar): marca 44 °C y baja a 35 °C. No se ve chispa. |
 
 ## Segundo exacto en los videos completos (`videos_originales/`)
 
@@ -48,7 +49,7 @@ desconectado y no se dañó) y en la tarde se volvió a soldar todo y funcionó.
 | 09:09 – 11:55 | Sistema conectado; el multímetro (UNI-T UT33C+) está en modo temperatura con el termopar |
 | 12:04 – 12:40 | Se reacomodan los cables del sistema |
 | 12:44 | Pasa una persona por detrás (recortar si hace falta) |
-| **12:46 – 12:52** | ⚠️ **Manipulación de los cables donde ocurre el corto VIN–OUT** |
+| **12:46 – 12:52** | ⚠️ **La sonda de temperatura toca el TP4056: corto VIN–OUT del elevador** |
 | 12:53 | Se pone un frasco para sostener los cables |
 | 13:07 | Se levanta la cámara: fin |
 

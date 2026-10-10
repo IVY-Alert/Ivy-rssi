@@ -95,7 +95,7 @@ cada momento están en [`MOMENTOS.md`](2026-10-07_sistema_electrico/MOMENTOS.md)
 |---|---|
 | `clips/02_ajuste_elevador_11V_a_5V.mp4` | Multímetro bajando de 11 V a 5.00 V |
 | `clips/04_ALERTA_con_bateria_pantalla_roja.mp4` | ⭐ El llavero con batería dispara la alerta en el celular |
-| `clips/05_IMPORTANTE_corto_circuito.mp4` | ⚠️ El corto VIN–OUT (para «dificultades y aprendizajes») |
+| `clips/05_IMPORTANTE_corto_circuito.mp4` | ⚠️ El corto: la sonda de temperatura toca el TP4056 y pone en corto VIN–OUT (para «dificultades y aprendizajes») |
 
 ## Hardware · soldadura del llavero (del ingeniero, por WhatsApp)
 
