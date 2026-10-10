@@ -14,7 +14,7 @@ desconectado y no se dañó) y en la tarde se volvió a soldar todo y funcionó.
 | `02_ajuste_elevador_11V_a_5V.mp4` | 2:05 | Girando la perilla: el multímetro baja de 11 V a **5.00 V** |
 | `03_conexion_al_ESP32.mp4` | 0:42 | Conexión del sistema al ESP32 |
 | `04_ALERTA_con_bateria_pantalla_roja.mp4` | 1:27 | ⭐ Se pulsa el llavero y el celular muestra la **alerta roja con la cuenta atrás** |
-| `05_IMPORTANTE_corto_circuito.mp4` | 0:32 | ⚠️ El momento del corto al manipular los cables |
+| `05_IMPORTANTE_corto_circuito.mp4` | 0:32 | ⚠️ El momento del corto al manipular los cables. El multímetro está en modo temperatura (termopar): marca 44 °C y baja a 35 °C. No se ve chispa. |
 
 ## Segundo exacto en los videos completos (`videos_originales/`)
 
@@ -45,7 +45,7 @@ desconectado y no se dañó) y en la tarde se volvió a soldar todo y funcionó.
 
 | Minuto | Qué pasa |
 |---|---|
-| 09:09 – 11:55 | Sistema conectado, el multímetro marca ~4.6 V |
+| 09:09 – 11:55 | Sistema conectado; el multímetro (UNI-T UT33C+) está en modo temperatura con el termopar |
 | 12:04 – 12:40 | Se reacomodan los cables del sistema |
 | 12:44 | Pasa una persona por detrás (recortar si hace falta) |
 | **12:46 – 12:52** | ⚠️ **Manipulación de los cables donde ocurre el corto VIN–OUT** |
