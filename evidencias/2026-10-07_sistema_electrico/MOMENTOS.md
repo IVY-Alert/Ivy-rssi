@@ -16,6 +16,7 @@ desconectado y no se dañó) y en la tarde se volvió a soldar todo y funcionó.
 | `03_conexion_al_ESP32.mp4` | 0:42 | Conexión del sistema al ESP32 |
 | `04_ALERTA_con_bateria_pantalla_roja.mp4` | 1:27 | ⭐ Se pulsa el llavero y el celular muestra la **alerta roja con la cuenta atrás** |
 | `05_IMPORTANTE_corto_circuito.mp4` | 0:32 | ⚠️ El momento del corto: la sonda de temperatura toca el TP4056. El multímetro está en modo temperatura (termopar): marca 44 °C y baja a 35 °C. No se ve chispa. |
+| `06_temperatura_TP4056_31_a_47C.mp4` | 10:52 | 🌡️ El termopar sobre el TP4056 cargando: sube de **32 a 50 °C** y termina en el corto. Es el original desde 02:00 hasta 12:52, en 720p y sin acelerar (minuto del clip = minuto del original − 2:00). |
 
 ## Segundo exacto en los videos completos (`videos_originales/`)
 
@@ -46,7 +47,16 @@ desconectado y no se dañó) y en la tarde se volvió a soldar todo y funcionó.
 
 | Minuto | Qué pasa |
 |---|---|
-| 09:09 – 11:55 | Sistema conectado; el multímetro (UNI-T UT33C+) está en modo temperatura con el termopar |
+| 00:00 – 02:06 | El multímetro (UNI-T UT33C+) ya está en modo temperatura con el termopar: **32 °C** estable. No se ve 31 °C: la grabación empieza en 32 |
+| **02:07** | Empieza la subida: 33 °C (en el clip 06: 0:07) |
+| 02:10 | 36 °C |
+| **03:08** | **44 °C** (clip 06: 1:08) |
+| 03:20 – 05:41 | Sube despacio y oscila entre 45 y 46 °C |
+| **05:42** | **47 °C** (clip 06: 3:42); se queda en 46–47 °C varios minutos |
+| 11:36 | 48 °C |
+| 11:48 | 49 °C |
+| **11:58 – 12:18** | **50 °C**, el máximo (clip 06: 9:58) |
+| 09:09 – 11:55 | Sistema conectado, midiendo la temperatura del TP4056 |
 | 12:04 – 12:40 | Se reacomodan los cables del sistema |
 | 12:44 | Pasa una persona por detrás (recortar si hace falta) |
 | **12:46 – 12:52** | ⚠️ **La sonda de temperatura toca el TP4056: corto VIN–OUT del elevador** |
