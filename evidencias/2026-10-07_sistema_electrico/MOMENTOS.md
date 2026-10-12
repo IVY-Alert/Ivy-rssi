@@ -16,7 +16,7 @@ desconectado y no se dañó) y en la tarde se volvió a soldar todo y funcionó.
 | `03_conexion_al_ESP32.mp4` | 0:42 | Conexión del sistema al ESP32 |
 | `04_ALERTA_con_bateria_pantalla_roja.mp4` | 1:27 | ⭐ Se pulsa el llavero y el celular muestra la **alerta roja con la cuenta atrás** |
 | `05_IMPORTANTE_corto_circuito.mp4` | 0:32 | ⚠️ El momento del corto: la sonda de temperatura toca el TP4056. El multímetro está en modo temperatura (termopar): marca 44 °C y baja a 35 °C. No se ve chispa. |
-| `06_temperatura_TP4056_31_a_47C.mp4` | 10:52 | 🌡️ El termopar sobre el TP4056 cargando: sube de **32 a 50 °C** y termina en el corto. Es el original desde 02:00 hasta 12:52, en 720p y sin acelerar (minuto del clip = minuto del original − 2:00). |
+| `06_temperatura_TP4056_32_a_47C.mp4` | 10:52 | 🌡️ El termopar sobre el TP4056 cargando: sube de **32 a 50 °C** y termina en el corto. Es el original desde 02:00 hasta 12:52, en 720p y sin acelerar (minuto del clip = minuto del original − 2:00). |
 
 ## Segundo exacto en los videos completos (`videos_originales/`)
 
